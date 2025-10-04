@@ -1,0 +1,36 @@
+@font-face {
+    font-family: 'BMitra';
+    src: url('BMitra.eot'); /* IE9 Compat Modes */
+    src: url('BMitra.eot?#') format('eot'), /* IE6–8 */
+    url('BMitra.ttf') format('truetype'), /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+    url('BMitra.woff') format('woff'), /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    url('BMitra.otf') format('opentype'),
+    url('BMitra.svg') format('svg');
+    font-variant: normal;
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'IranNastaligh';
+    src: url('IranNastaligh.eot'); /* IE9 Compat Modes */
+    src: url('IranNastaligh.eot?#') format('eot'), /* IE6–8 */
+    url('IranNastaligh.ttf') format('truetype'), /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+    url('IranNastaligh.woff') format('woff'), /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    url('IranNastaligh.otf') format('opentype'),
+    url('IranNastaligh.svg') format('svg');
+    font-variant: normal;
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'BKoodakBold';
+    src: url('BKoodakBold.eot'); /* IE9 Compat Modes */
+    src: url('BKoodakBold.eot?#') format('eot'), /* IE6–8 */
+    url('BKoodakBold.ttf') format('truetype'), /* Saf3—5, Chrome4+, FF3.5, Opera 10+ */
+    url('BKoodakBold.woff') format('woff'), /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    url('BKoodakBold.otf') format('opentype'),
+    url('BKoodakBold.svg') format('svg');
+    font-variant: normal;
+    font-weight: normal;
+    font-style: normal;
+}
