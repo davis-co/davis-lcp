@@ -136,9 +136,9 @@ $(document).ready(function () {
     btp: btoa(
       JSON.stringify({
         text: "send message",
-        variant: "ghost",
+        variant: "fill",
         color: "primary",
-        radius: "xs",
+        radius: "radius-base",
         icon: "/resource/files/1486222953647.png",
       })
     ),

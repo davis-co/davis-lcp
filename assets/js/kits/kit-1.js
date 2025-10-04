@@ -173,9 +173,9 @@ class Button extends Input {
   cT() {
     const variant = this.btp.variant || "fill"; // fill, outline, ghost, link
     const color = this.btp.color || "primary"; // primary, secondary, danger, warning, link
-    const radius = this.btp.radius || "md"; // 2xs(4px) -- xs(6px) -- 2sm(8px) -- sm(10px) -- md(12px) -- lg(16px), 2xl(24px) , 3xl(32px)
+    const radius = this.btp.radius || "radius-base"; // 2xs(4px) -- xs(6px) -- 2sm(8px) -- sm(10px) -- md(12px) -- lg(16px), 2xl(24px) , 3xl(32px)
     this.target = $(
-      `<input type="button" class="mm_button mm_button--${variant} mm_button--${color} mm_button--radius-${radius} mm_button--has-before mm_button--has-after"></input>`
+      `<input type="button" class="mm_button mm_button--${variant} mm_button--${color} mm_button--${radius} mm_button--has-before mm_button--has-after"></input>`
     );
 
     // text
