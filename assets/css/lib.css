@@ -1,5 +1,78 @@
 @charset "utf-8";
 
+/*!
+ * نحوه استفاده در CSS:
+ *
+ * SPACING:
+ * .my-element {
+ *   margin: var(--spacing-4);                     // 16px
+ *   padding: var(--spacing-2) var(--spacing-3);   // 8px 12px
+ *   gap: var(--spacing-1);                        // 4px
+ * }
+ *
+ * COLORS:
+ * .my-button {
+ *   background-color: var(--color-primary);       // رنگ اصلی
+ *   color: var(--color-white);                    // متن سفید
+ *   border-color: var(--color-primary-60);       // رنگ border
+ * }
+ *
+ * .my-text {
+ *   color: var(--color-neutral-80);             // متن خاکستری تیره
+ * }
+ *
+ * BORDER RADIUS:
+ * .my-card {
+ *   border-radius: var(--radius-base);           // 8px - پیش‌فرض
+ *   border-radius: var(--radius-1);             // 4px - کوچک
+ *   border-radius: var(--radius-5);             // 16px - بزرگ
+ * }
+ *
+ * CHECKBOX:
+ * استفاده در JavaScript:
+ * var checkbox = new Checkbox({
+ *   btp: btoa(JSON.stringify({
+ *     type: "checkbox",           // checkbox یا radio
+ *     shape: "circle",            // circle, rect, text
+ *     color: "primary",          // primary, secondary, success, info, warning, error, danger, neutral
+ *     checked: false,            // مقدار اولیه
+ *     disabled: false,           // حالت disabled
+ *     checked_text: "فعال",      // متن حالت فعال
+ *     unchecked_text: "غیرفعال" // متن حالت غیرفعال
+ *   }))
+ * });
+ *
+ * قوانین مهم:
+ * 1. هرگز از مقادیر hardcode استفاده نکنید (مثل margin: 10px، color: #000)
+ * 2. همیشه از var(--spacing-X)، var(--color-X)، var(--radius-X) استفاده کنید
+ * 3. نزدیک‌ترین مقدار را به نیاز طراحی خود انتخاب کنید
+ *
+ * الگوهای رایج SPACING:
+ * - فاصله‌های کوچک: var(--spacing-1) (4px) یا var(--spacing-2) (8px)
+ * - فاصله‌های متوسط: var(--spacing-3) (12px) یا var(--spacing-4) (16px)
+ * - فاصله‌های بزرگ: var(--spacing-5) (24px) یا var(--spacing-6) (32px)
+ * - فاصله‌های خیلی بزرگ: var(--spacing-8) (48px) یا var(--spacing-10) (64px)
+ *
+ * الگوهای رایج COLORS:
+ * - رنگ اصلی: var(--color-primary) یا var(--color-secondary)
+ * - متن: var(--color-white)، var(--color-black)، var(--color-neutral-80)
+ * - پس‌زمینه: var(--color-neutral-10)، var(--color-neutral-20)
+ * - خطا: var(--color-error)، موفقیت: var(--color-success)
+ *
+ * الگوهای رایج BORDER RADIUS:
+ * - دکمه‌ها: var(--radius-base) (8px)
+ * - کارت‌ها: var(--radius-3) (10px) یا var(--radius-4) (12px)
+ * - تصاویر: var(--radius-2) (6px)
+ * - input ها: var(--radius-base) (8px)
+ *
+ * مثال‌های عملی:
+ * - padding دکمه: var(--spacing-2) var(--spacing-4)
+ * - margin بین عناصر: var(--spacing-3)
+ * - gap در flexbox: var(--spacing-2)
+ * - رنگ دکمه اصلی: var(--color-primary)
+ * - border-radius دکمه: var(--radius-base)
+ */
+
 /* ===== COLOR CONFIGURATION ===== */
 :root {
   /* Primary Color Scale */
@@ -107,6 +180,20 @@
   --radius-6: 20px;
   --radius-7: 24px;
   --radius-8: 32px;
+
+  /* Spacing Configuration */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 24px;
+  --spacing-6: 32px;
+  --spacing-7: 40px;
+  --spacing-8: 48px;
+  --spacing-9: 56px;
+  --spacing-10: 64px;
+  --spacing-11: 72px;
+  --spacing-12: 80px;
 }
 
 html {
@@ -182,9 +269,9 @@ textarea {
 button,
 /* input-style */
 input:not(.mm_button) {
-  border-radius: 8px;
+  border-radius: var(--radius-base);
   border: none;
-  padding: 5px 10px;
+  padding: var(--spacing-1) var(--spacing-2);
   background-color: #f6f6f6;
   border: 1px solid #a2a2a2;
   color: #090909;
@@ -203,43 +290,46 @@ input:not(.mm_button) {
   width: 100%;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  border-radius: 0.5rem;
+  gap: var(--spacing-2);
+  border-radius: var(--radius-base);
   border: none;
   font-weight: 600;
-  padding: 1rem 2rem;
+  padding: var(--spacing-4) var(--spacing-8);
   line-height: 1;
   transition: background-color 0.15s ease, color 0.15s ease,
     border-color 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease;
   background-repeat: no-repeat;
   background-origin: padding-box;
-  background-size: 1rem 1rem, 1rem 1rem;
+  background-size: var(--spacing-4) var(--spacing-4),
+    var(--spacing-4) var(--spacing-4);
 }
 
 /* icon helpers for input-based buttons */
 .mm_button--has-before {
-  padding-left: 32px;
+  padding-left: var(--spacing-8);
   background-image: var(--icon-before, none) !important;
-  background-position: left 8px center !important;
+  background-position: left var(--spacing-2) center !important;
   background-repeat: no-repeat !important;
-  background-size: 16px 16px !important;
+  background-size: var(--spacing-4) var(--spacing-4) !important;
 }
 
 .mm_button--has-after {
-  padding-right: 32px;
+  padding-right: var(--spacing-8);
   background-image: var(--icon-after, none) !important;
-  background-position: right 8px center !important;
+  background-position: right var(--spacing-2) center !important;
   background-repeat: no-repeat !important;
-  background-size: 16px 16px !important;
+  background-size: var(--spacing-4) var(--spacing-4) !important;
 }
 
 .mm_button--has-before.mm_button--has-after {
-  padding-left: 32px;
-  padding-right: 32px;
+  padding-left: var(--spacing-8);
+  padding-right: var(--spacing-8);
   background-image: var(--icon-before, none), var(--icon-after, none) !important;
-  background-position: left 8px center, right 8px center !important;
+  background-position: left var(--spacing-2) center,
+    right var(--spacing-2) center !important;
   background-repeat: no-repeat, no-repeat !important;
-  background-size: 16px 16px, 16px 16px !important;
+  background-size: var(--spacing-4) var(--spacing-4),
+    var(--spacing-4) var(--spacing-4) !important;
 }
 .mm_button_icon img {
   width: 1em;
@@ -1212,10 +1302,500 @@ input:not(.mm_button) {
   color: var(--color-neutral-120);
 }
 
-/* states */
-.mm_button:is(:disabled, .is-disabled) {
-  opacity: 0.6;
+/* line style */
+.mm_line {
+  display: block;
+  margin-left: var(--spacing-10);
+  margin-right: var(--spacing-10);
+  background-color: var(--color-neutral-90);
+  border: 1px solid var(--color-neutral-90);
+  padding: 0;
+  margin: 80px;
+}
+
+/* ===== CHECKBOX STYLES ===== */
+/* Divider */
+.mm_divider {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  margin: var(--spacing-4) 0;
+}
+.mm_divider::before,
+.mm_divider::after {
+  content: "";
+  flex: 1 1 0;
+  height: 1px;
+  background-color: var(--color-neutral-40);
+}
+.mm_divider--dashed::before,
+.mm_divider--dashed::after {
+  background-image: linear-gradient(
+    to right,
+    var(--color-neutral-40) 50%,
+    rgba(0, 0, 0, 0) 0%
+  );
+  background-size: 8px 1px;
+  background-repeat: repeat-x;
+  background-color: transparent;
+}
+.mm_divider__label {
+  color: var(--color-neutral-80);
+  font-weight: 600;
+}
+
+/* Hide default checkbox inputs */
+.circle-nicelabel,
+.rect-nicelabel,
+.text-nicelabel {
+  display: none !important;
+}
+
+/* Nicelabel default position */
+.nicelabel-default-position {
+  display: block;
+}
+
+/* Circle Toggle Switch */
+.nicelabel-default-position {
+  display: block;
+  width: var(--spacing-16); /* 64px */
+  height: var(--spacing-8); /* 32px */
+  background-color: var(--color-primary);
+  border-radius: var(--spacing-8);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.2s ease;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+
+.circle-btn {
+  position: absolute;
+  width: var(--spacing-6); /* 24px */
+  height: var(--spacing-6);
+  background-color: var(--color-white);
+  border-radius: var(--spacing-3); /* 12px */
+  left: var(--spacing-9); /* 36px */
+  top: var(--spacing-1); /* 4px */
+  transition: left 0.2s ease;
+  box-shadow: 0 var(--spacing-1) var(--spacing-2) rgba(0, 0, 0, 0.1);
+}
+
+.circle-nicelabel:not(:checked) + .nicelabel-default-position .circle-btn {
+  left: var(--spacing-1); /* 4px */
+}
+
+.circle-nicelabel:not(:checked) + .nicelabel-default-position {
+  background-color: var(--color-neutral-40);
+}
+
+.circle-nicelabel[disabled] + .nicelabel-default-position {
+  opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Rectangular Toggle Switch */
+.rect-nicelabel + .nicelabel-default-position {
+  border-radius: var(--radius-base); /* 8px */
+}
+
+.rect-btn {
+  position: absolute;
+  width: var(--spacing-6); /* 24px */
+  height: var(--spacing-6);
+  background-color: var(--color-white);
+  border-radius: var(--radius-1); /* 4px */
+  left: var(--spacing-9); /* 36px */
+  top: var(--spacing-1); /* 4px */
+  transition: left 0.2s ease;
+  box-shadow: 0 var(--spacing-1) var(--spacing-2) rgba(0, 0, 0, 0.1);
+}
+
+.rect-nicelabel:not(:checked) + .nicelabel-default-position .rect-btn {
+  left: var(--spacing-1); /* 4px */
+}
+
+.rect-nicelabel:not(:checked) + .nicelabel-default-position {
+  background-color: var(--color-neutral-40);
+}
+
+.rect-nicelabel[disabled] + .nicelabel-default-position {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Text Toggle Button */
+.text-nicelabel + .nicelabel-default-position {
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  display: table;
+  padding: var(--spacing-2) var(--spacing-4) var(--spacing-2) var(--spacing-2);
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  min-width: var(--spacing-20); /* 80px */
+}
+
+.text-nicelabel + .nicelabel-default-position > span.nicelabel-unchecked,
+.text-nicelabel + .nicelabel-default-position > span.nicelabel-checked {
+  display: inline-block;
+  line-height: var(--spacing-4);
+  margin-left: var(--spacing-2);
+  vertical-align: bottom;
+}
+
+.text-nicelabel + .nicelabel-default-position > span.nicelabel-unchecked-image,
+.text-nicelabel + .nicelabel-default-position > span.nicelabel-checked-image {
+  display: inline-block;
+  width: var(--spacing-4);
+  height: var(--spacing-4);
+  vertical-align: bottom;
+  background-repeat: no-repeat;
+  background-position: left center;
+  transition: all 0.2s ease;
+}
+
+.text-nicelabel:not(:checked) + .nicelabel-default-position {
+  background-color: var(--color-neutral-40);
+  color: var(--color-neutral-80);
+}
+
+.text-nicelabel:not(:checked)
+  + .nicelabel-default-position
+  > span.nicelabel-checked-image,
+.text-nicelabel:not(:checked)
+  + .nicelabel-default-position
+  > span.nicelabel-checked {
+  display: none;
+}
+
+.text-nicelabel:checked + .nicelabel-default-position {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.text-nicelabel:checked
+  + .nicelabel-default-position
+  > span.nicelabel-unchecked-image,
+.text-nicelabel:checked
+  + .nicelabel-default-position
+  > span.nicelabel-unchecked {
+  display: none;
+}
+
+.text-nicelabel[disabled] + .nicelabel-default-position {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== CHECKBOX COLOR VARIANTS ===== */
+
+/* Primary Color Variants */
+.circle-nicelabel--primary + .nicelabel-default-position,
+.rect-nicelabel--primary + .nicelabel-default-position,
+.text-nicelabel--primary + .nicelabel-default-position {
+  background-color: var(--color-primary);
+}
+
+.circle-nicelabel--primary:checked + .nicelabel-default-position,
+.rect-nicelabel--primary:checked + .nicelabel-default-position,
+.text-nicelabel--primary:checked + .nicelabel-default-position {
+  background-color: var(--color-primary);
+}
+
+/* Secondary Color Variants */
+.circle-nicelabel--secondary + .nicelabel-default-position,
+.rect-nicelabel--secondary + .nicelabel-default-position,
+.text-nicelabel--secondary + .nicelabel-default-position {
+  background-color: var(--color-secondary);
+}
+
+.circle-nicelabel--secondary:checked + .nicelabel-default-position,
+.rect-nicelabel--secondary:checked + .nicelabel-default-position,
+.text-nicelabel--secondary:checked + .nicelabel-default-position {
+  background-color: var(--color-secondary);
+}
+
+/* Success Color Variants */
+.circle-nicelabel--success + .nicelabel-default-position,
+.rect-nicelabel--success + .nicelabel-default-position,
+.text-nicelabel--success + .nicelabel-default-position {
+  background-color: var(--color-success);
+}
+
+.circle-nicelabel--success:checked + .nicelabel-default-position,
+.rect-nicelabel--success:checked + .nicelabel-default-position,
+.text-nicelabel--success:checked + .nicelabel-default-position {
+  background-color: var(--color-success);
+}
+
+/* Info Color Variants */
+.circle-nicelabel--info + .nicelabel-default-position,
+.rect-nicelabel--info + .nicelabel-default-position,
+.text-nicelabel--info + .nicelabel-default-position {
+  background-color: var(--color-info);
+}
+
+.circle-nicelabel--info:checked + .nicelabel-default-position,
+.rect-nicelabel--info:checked + .nicelabel-default-position,
+.text-nicelabel--info:checked + .nicelabel-default-position {
+  background-color: var(--color-info);
+}
+
+/* Warning Color Variants */
+.circle-nicelabel--warning + .nicelabel-default-position,
+.rect-nicelabel--warning + .nicelabel-default-position,
+.text-nicelabel--warning + .nicelabel-default-position {
+  background-color: var(--color-warning);
+}
+
+.circle-nicelabel--warning:checked + .nicelabel-default-position,
+.rect-nicelabel--warning:checked + .nicelabel-default-position,
+.text-nicelabel--warning:checked + .nicelabel-default-position {
+  background-color: var(--color-warning);
+}
+
+/* Error Color Variants */
+.circle-nicelabel--error + .nicelabel-default-position,
+.rect-nicelabel--error + .nicelabel-default-position,
+.text-nicelabel--error + .nicelabel-default-position {
+  background-color: var(--color-error);
+}
+
+.circle-nicelabel--error:checked + .nicelabel-default-position,
+.rect-nicelabel--error:checked + .nicelabel-default-position,
+.text-nicelabel--error:checked + .nicelabel-default-position {
+  background-color: var(--color-error);
+}
+
+/* Danger Color Variants */
+.circle-nicelabel--danger + .nicelabel-default-position,
+.rect-nicelabel--danger + .nicelabel-default-position,
+.text-nicelabel--danger + .nicelabel-default-position {
+  background-color: var(--color-error);
+}
+
+.circle-nicelabel--danger:checked + .nicelabel-default-position,
+.rect-nicelabel--danger:checked + .nicelabel-default-position,
+.text-nicelabel--danger:checked + .nicelabel-default-position {
+  background-color: var(--color-error);
+}
+
+/* Neutral Color Variants */
+.circle-nicelabel--neutral + .nicelabel-default-position,
+.rect-nicelabel--neutral + .nicelabel-default-position,
+.text-nicelabel--neutral + .nicelabel-default-position {
+  background-color: var(--color-neutral-80);
+}
+
+.circle-nicelabel--neutral:checked + .nicelabel-default-position,
+.rect-nicelabel--neutral:checked + .nicelabel-default-position,
+.text-nicelabel--neutral:checked + .nicelabel-default-position {
+  background-color: var(--color-neutral-80);
+}
+
+/* ===== CHECKBOX DISABLED STATES ===== */
+
+/* Disabled states for different checkbox colors */
+.circle-nicelabel--primary[disabled] + .nicelabel-default-position,
+.rect-nicelabel--primary[disabled] + .nicelabel-default-position,
+.text-nicelabel--primary[disabled] + .nicelabel-default-position {
+  background-color: var(--color-primary-20) !important;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.circle-nicelabel--secondary[disabled] + .nicelabel-default-position,
+.rect-nicelabel--secondary[disabled] + .nicelabel-default-position,
+.text-nicelabel--secondary[disabled] + .nicelabel-default-position {
+  background-color: var(--color-secondary-20) !important;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.circle-nicelabel--success[disabled] + .nicelabel-default-position,
+.rect-nicelabel--success[disabled] + .nicelabel-default-position,
+.text-nicelabel--success[disabled] + .nicelabel-default-position {
+  background-color: var(--color-success-lm-disable) !important;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.circle-nicelabel--info[disabled] + .nicelabel-default-position,
+.rect-nicelabel--info[disabled] + .nicelabel-default-position,
+.text-nicelabel--info[disabled] + .nicelabel-default-position {
+  background-color: var(--color-info-lm-disable) !important;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.circle-nicelabel--warning[disabled] + .nicelabel-default-position,
+.rect-nicelabel--warning[disabled] + .nicelabel-default-position,
+.text-nicelabel--warning[disabled] + .nicelabel-default-position {
+  background-color: var(--color-warning-lm-disable) !important;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.circle-nicelabel--error[disabled] + .nicelabel-default-position,
+.rect-nicelabel--error[disabled] + .nicelabel-default-position,
+.text-nicelabel--error[disabled] + .nicelabel-default-position {
+  background-color: var(--color-error-lm-disable) !important;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.circle-nicelabel--danger[disabled] + .nicelabel-default-position,
+.rect-nicelabel--danger[disabled] + .nicelabel-default-position,
+.text-nicelabel--danger[disabled] + .nicelabel-default-position {
+  background-color: var(--color-error-lm-disable) !important;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.circle-nicelabel--neutral[disabled] + .nicelabel-default-position,
+.rect-nicelabel--neutral[disabled] + .nicelabel-default-position,
+.text-nicelabel--neutral[disabled] + .nicelabel-default-position {
+  background-color: var(--color-neutral-40) !important;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Button States */
+.mm_button:is(:disabled, .is-disabled),
+.mm_button--disable {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none !important;
+}
+
+/* Disabled states for different button colors */
+.mm_button--primary:is(:disabled, .is-disabled),
+.mm_button--primary.mm_button--disable {
+  background-color: var(--color-primary-20) !important;
+  color: var(--color-primary-60) !important;
+  border-color: var(--color-primary-30) !important;
+}
+
+.mm_button--secondary:is(:disabled, .is-disabled),
+.mm_button--secondary.mm_button--disable {
+  background-color: var(--color-secondary-20) !important;
+  color: var(--color-secondary-60) !important;
+  border-color: var(--color-secondary-30) !important;
+}
+
+.mm_button--success:is(:disabled, .is-disabled),
+.mm_button--success.mm_button--disable {
+  background-color: var(--color-success-lm-disable) !important;
+  color: var(--color-success-60) !important;
+  border-color: var(--color-success-lm-disable) !important;
+}
+
+.mm_button--info:is(:disabled, .is-disabled),
+.mm_button--info.mm_button--disable {
+  background-color: var(--color-info-lm-disable) !important;
+  color: var(--color-info-60) !important;
+  border-color: var(--color-info-lm-disable) !important;
+}
+
+.mm_button--warning:is(:disabled, .is-disabled),
+.mm_button--warning.mm_button--disable {
+  background-color: var(--color-warning-lm-disable) !important;
+  color: var(--color-warning-60) !important;
+  border-color: var(--color-warning-lm-disable) !important;
+}
+
+.mm_button--error:is(:disabled, .is-disabled),
+.mm_button--error.mm_button--disable {
+  background-color: var(--color-error-lm-disable) !important;
+  color: var(--color-error-60) !important;
+  border-color: var(--color-error-lm-disable) !important;
+}
+
+.mm_button--danger:is(:disabled, .is-disabled),
+.mm_button--danger.mm_button--disable {
+  background-color: var(--color-error-lm-disable) !important;
+  color: var(--color-error-60) !important;
+  border-color: var(--color-error-lm-disable) !important;
+}
+
+.mm_button--neutral:is(:disabled, .is-disabled),
+.mm_button--neutral.mm_button--disable {
+  background-color: var(--color-neutral-40) !important;
+  color: var(--color-neutral-60) !important;
+  border-color: var(--color-neutral-50) !important;
+}
+
+/* Disabled hover states - prevent any changes */
+.mm_button:is(:disabled, .is-disabled):hover {
+  transform: none !important;
+}
+
+.mm_button--primary:is(:disabled, .is-disabled):hover,
+.mm_button--primary.mm_button--disable:hover {
+  background-color: var(--color-primary-20) !important;
+  color: var(--color-primary-60) !important;
+  border-color: var(--color-primary-30) !important;
+}
+
+.mm_button--secondary:is(:disabled, .is-disabled):hover,
+.mm_button--secondary.mm_button--disable:hover {
+  background-color: var(--color-secondary-20) !important;
+  color: var(--color-secondary-60) !important;
+  border-color: var(--color-secondary-30) !important;
+}
+
+.mm_button--success:is(:disabled, .is-disabled):hover,
+.mm_button--success.mm_button--disable:hover {
+  background-color: var(--color-success-lm-disable) !important;
+  color: var(--color-success-60) !important;
+  border-color: var(--color-success-lm-disable) !important;
+}
+
+.mm_button--info:is(:disabled, .is-disabled):hover,
+.mm_button--info.mm_button--disable:hover {
+  background-color: var(--color-info-lm-disable) !important;
+  color: var(--color-info-60) !important;
+  border-color: var(--color-info-lm-disable) !important;
+}
+
+.mm_button--warning:is(:disabled, .is-disabled):hover,
+.mm_button--warning.mm_button--disable:hover {
+  background-color: var(--color-warning-lm-disable) !important;
+  color: var(--color-warning-60) !important;
+  border-color: var(--color-warning-lm-disable) !important;
+}
+
+.mm_button--error:is(:disabled, .is-disabled):hover,
+.mm_button--error.mm_button--disable:hover {
+  background-color: var(--color-error-lm-disable) !important;
+  color: var(--color-error-60) !important;
+  border-color: var(--color-error-lm-disable) !important;
+}
+
+.mm_button--danger:is(:disabled, .is-disabled):hover,
+.mm_button--danger.mm_button--disable:hover {
+  background-color: var(--color-error-lm-disable) !important;
+  color: var(--color-error-60) !important;
+  border-color: var(--color-error-lm-disable) !important;
+}
+
+.mm_button--neutral:is(:disabled, .is-disabled):hover,
+.mm_button--neutral.mm_button--disable:hover {
+  background-color: var(--color-neutral-40) !important;
+  color: var(--color-neutral-60) !important;
+  border-color: var(--color-neutral-50) !important;
 }
 .mm_button.is-loading {
   position: relative;
@@ -1224,13 +1804,13 @@ input:not(.mm_button) {
 .mm_button.is-loading::after {
   content: "";
   position: absolute;
-  width: 1rem;
-  height: 1rem;
+  width: var(--spacing-4);
+  height: var(--spacing-4);
   border: 2px solid rgba(255, 255, 255, 0.6);
   border-top-color: rgba(255, 255, 255, 1);
   border-radius: 9999px;
   animation: mm_spin 0.8s linear infinite;
-  right: 0.5rem;
+  right: var(--spacing-2);
 }
 @keyframes mm_spin {
   to {
@@ -1252,7 +1832,7 @@ button:-moz-focusring,
 [type="button"]:-moz-focusring,
 [type="reset"]:-moz-focusring,
 fieldset {
-  padding: 0.35em 0.75em 0.625em;
+  padding: var(--spacing-1) var(--spacing-3) var(--spacing-2);
 }
 legend {
   box-sizing: border-box;
@@ -1279,13 +1859,16 @@ textarea {
 }
 [type="search"] {
   -webkit-appearance: textfield;
+  appearance: textfield;
   outline-offset: -2px;
 }
 [type="search"]::-webkit-search-decoration {
   -webkit-appearance: none;
+  appearance: none;
 }
 ::-webkit-file-upload-button {
   -webkit-appearance: button;
+  appearance: button;
   font: inherit;
 }
 details {
@@ -1311,13 +1894,13 @@ body {
   box-sizing: border-box;
   display: flex;
   flex-flow: row wrap;
-  margin: 0 -0.5rem;
+  margin: 0 calc(-1 * var(--spacing-2));
 }
 [class*="col-"],
 [class*="col_"],
 [class~="col"] {
   box-sizing: border-box;
-  padding: 0 0.5rem 1rem;
+  padding: 0 var(--spacing-2) var(--spacing-4);
   max-width: 100%;
 }
 [class*="col_"],

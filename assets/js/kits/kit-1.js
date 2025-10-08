@@ -171,19 +171,28 @@ class ComputedValue extends Input {
 }
 class Button extends Input {
   cT() {
-    const variant = this.btp.variant || "fill"; // fill, outline, ghost, link
+    const variant = this.btp.variant || "fill"; // fill, outline, ghost, link, disable
     const color = this.btp.color || "primary"; // primary, secondary, danger, warning, link
     const radius = this.btp.radius || "radius-base"; // 2xs(4px) -- xs(6px) -- 2sm(8px) -- sm(10px) -- md(12px) -- lg(16px), 2xl(24px) , 3xl(32px)
+
+    // اگر variant = "disable" باشد، دکمه را disabled می‌کنیم
+    const isDisabled = variant === "disable" || this.btp.disabled;
+
     this.target = $(
-      `<input type="button" class="mm_button mm_button--${variant} mm_button--${color} mm_button--${radius} mm_button--has-before mm_button--has-after"></input>`
+      `<input type="button" class="mm_button mm_button--${variant} mm_button--${color} mm_button--${radius} mm_button--has-before mm_button--has-after" ${
+        isDisabled ? "disabled" : ""
+      }></input>`
     );
 
     // text
     this.target.val(this.btp.text);
 
     // icon
-    this.target.css("--icon-before", `url("${this.btp.icon}")`);
-    this.target.css("--icon-after", `url("${this.btp.icon}")`);
+    if (this.btp.icon) {
+      this.target.css("--icon-before", `url("${this.btp.icon}")`);
+      this.target.css("--icon-after", `url("${this.btp.icon}")`);
+    }
+
     let _t = this;
     this.target.click(function () {
       _t.doIt();
@@ -220,4 +229,59 @@ class Line extends Element {
   }
   rE() {}
   sRO(bro) {}
+}
+class Checkbox extends Input {
+  cT() {
+    // ایجاد input اصلی
+    const type = this.btp.type || "checkbox"; // یا radio
+    const shape = this.btp.shape || "rect"; // rect, circle, text
+    const color = this.btp.color || "primary"; // primary, secondary, success, info, warning, error, danger, neutral
+    const position = this.btp.position_class || "nicelabel-default-position";
+
+    const cssClasses = `${shape}-nicelabel`;
+    this.target = $(`<input type="${type}" class="${cssClasses}">`);
+
+    if (color && color !== "primary") {
+      this.target.addClass(`${shape}-nicelabel--${color}`);
+    }
+
+    if (this.btp.checked) this.target.prop("checked", true);
+    if (this.btp.disabled) this.target.prop("disabled", true);
+
+    const nicelabelData = {
+      position_class: position,
+      checked_text: this.btp.checked_text || "فعال",
+      unchecked_text: this.btp.unchecked_text || "غیرفعال",
+    };
+
+    this.target.attr("data-nicelabel", JSON.stringify(nicelabelData));
+    this.box.append(this.target);
+  }
+
+  gJACT() {
+    super.gJACT();
+
+    // اعمال پلاگین nicelabel بعد از قرار گرفتن در DOM
+    setTimeout(() => {
+      if ($.fn.nicelabel) {
+        this.target.nicelabel({
+          checked_text: this.btp.checked_text || "فعال",
+          unchecked_text: this.btp.unchecked_text || "غیرفعال",
+          uselabel: false, // برای text variant، فقط متن بدون آیکون
+        });
+      }
+    }, 0);
+  }
+
+  gV() {
+    return this.target.is(":checked");
+  }
+
+  sV(v) {
+    this.target.prop("checked", !!v);
+  }
+
+  cSFSDTS() {
+    return { status: this.lv != this.gV() };
+  }
 }

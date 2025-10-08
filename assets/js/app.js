@@ -88,12 +88,18 @@ $(document).ready(function () {
   };
 
   var checkbox = function () {
-    var checkbox_section = new CheckBox({
-      x0: 6,
-      x2: 2,
-      x3: [{ id: 1, v: 2 }],
-      x6: 12,
-      x19: false,
+    var checkbox_section = new Checkbox({
+      btp: btoa(
+        JSON.stringify({
+          type: "checkbox", // checkbox یا radio
+          shape: "circle", // circle, rect, text
+          color: "primary", // primary, secondary, success, info, warning, error, danger, neutral
+          checked: false, // مقدار اولیه
+          disabled: false, // حالت disabled
+          checked_text: "فعال", // متن حالت فعال
+          unchecked_text: "غیرفعال", // متن حالت غیرفعال
+        })
+      ),
     });
     $(".fj_maincontent").append(checkbox_section.gEFA());
   };
@@ -139,7 +145,6 @@ $(document).ready(function () {
         variant: "fill",
         color: "primary",
         radius: "radius-base",
-        icon: "/resource/files/1486222953647.png",
       })
     ),
   });
@@ -155,7 +160,6 @@ $(document).ready(function () {
     //testUCG();
     //timepicker();
     //radio();
-    //checkbox();
     //gridview();
     // uploader();
     //chart();
