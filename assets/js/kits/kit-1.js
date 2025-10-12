@@ -238,12 +238,16 @@ class Checkbox extends Input {
     const color = this.btp.color || "primary"; // primary, secondary, success, info, warning, error, danger, neutral
     const position = this.btp.position_class || "nicelabel-default-position";
 
-    const cssClasses = `${shape}-nicelabel`;
-    this.target = $(`<input type="${type}" class="${cssClasses}">`);
+    // ایجاد کلاس‌های اصلی
+    const baseClass = `${shape}-nicelabel`;
+    let cssClasses = baseClass;
 
+    // اضافه کردن کلاس رنگ اگر primary نباشد
     if (color && color !== "primary") {
-      this.target.addClass(`${shape}-nicelabel--${color}`);
+      cssClasses += ` ${baseClass}--${color}`;
     }
+
+    this.target = $(`<input type="${type}" class="${cssClasses}">`);
 
     if (this.btp.checked) this.target.prop("checked", true);
     if (this.btp.disabled) this.target.prop("disabled", true);

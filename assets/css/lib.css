@@ -1388,6 +1388,10 @@ input:not(.mm_button) {
   left: var(--spacing-1); /* 4px */
 }
 
+.circle-nicelabel:checked + .nicelabel-default-position .circle-btn {
+  left: calc(100% - var(--spacing-6) - var(--spacing-1)); /* تا انتهای راست */
+}
+
 .circle-nicelabel:not(:checked) + .nicelabel-default-position {
   background-color: var(--color-neutral-40);
 }
@@ -1416,6 +1420,10 @@ input:not(.mm_button) {
 
 .rect-nicelabel:not(:checked) + .nicelabel-default-position .rect-btn {
   left: var(--spacing-1); /* 4px */
+}
+
+.rect-nicelabel:checked + .nicelabel-default-position .rect-btn {
+  left: calc(100% - var(--spacing-6) - var(--spacing-1)); /* تا انتهای راست */
 }
 
 .rect-nicelabel:not(:checked) + .nicelabel-default-position {
@@ -1503,104 +1511,160 @@ input:not(.mm_button) {
 /* Primary Color Variants */
 .circle-nicelabel--primary + .nicelabel-default-position,
 .rect-nicelabel--primary + .nicelabel-default-position,
-.text-nicelabel--primary + .nicelabel-default-position {
+.text-nicelabel--primary + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--primary,
+.nicelabel-default-position.rect-nicelabel--primary,
+.nicelabel-default-position.text-nicelabel--primary {
   background-color: var(--color-primary);
 }
 
 .circle-nicelabel--primary:checked + .nicelabel-default-position,
 .rect-nicelabel--primary:checked + .nicelabel-default-position,
-.text-nicelabel--primary:checked + .nicelabel-default-position {
+.text-nicelabel--primary:checked + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--primary:has(+ input:checked),
+.nicelabel-default-position.rect-nicelabel--primary:has(+ input:checked),
+.nicelabel-default-position.text-nicelabel--primary:has(+ input:checked) {
   background-color: var(--color-primary);
+}
+
+/* موقعیت دکمه در حالت فعال برای همه کلاس‌های رنگ‌دار */
+.circle-nicelabel:checked + .nicelabel-default-position .circle-btn,
+.rect-nicelabel:checked + .nicelabel-default-position .rect-btn,
+.nicelabel-default-position:has(+ input:checked) .circle-btn,
+.nicelabel-default-position:has(+ input:checked) .rect-btn {
+  left: calc(100% - var(--spacing-6) - var(--spacing-1));
 }
 
 /* Secondary Color Variants */
 .circle-nicelabel--secondary + .nicelabel-default-position,
 .rect-nicelabel--secondary + .nicelabel-default-position,
-.text-nicelabel--secondary + .nicelabel-default-position {
+.text-nicelabel--secondary + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--secondary,
+.nicelabel-default-position.rect-nicelabel--secondary,
+.nicelabel-default-position.text-nicelabel--secondary {
   background-color: var(--color-secondary);
 }
 
 .circle-nicelabel--secondary:checked + .nicelabel-default-position,
 .rect-nicelabel--secondary:checked + .nicelabel-default-position,
-.text-nicelabel--secondary:checked + .nicelabel-default-position {
+.text-nicelabel--secondary:checked + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--secondary:has(+ input:checked),
+.nicelabel-default-position.rect-nicelabel--secondary:has(+ input:checked),
+.nicelabel-default-position.text-nicelabel--secondary:has(+ input:checked) {
   background-color: var(--color-secondary);
 }
 
 /* Success Color Variants */
 .circle-nicelabel--success + .nicelabel-default-position,
 .rect-nicelabel--success + .nicelabel-default-position,
-.text-nicelabel--success + .nicelabel-default-position {
+.text-nicelabel--success + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--success,
+.nicelabel-default-position.rect-nicelabel--success,
+.nicelabel-default-position.text-nicelabel--success {
   background-color: var(--color-success);
 }
 
 .circle-nicelabel--success:checked + .nicelabel-default-position,
 .rect-nicelabel--success:checked + .nicelabel-default-position,
-.text-nicelabel--success:checked + .nicelabel-default-position {
+.text-nicelabel--success:checked + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--success:has(+ input:checked),
+.nicelabel-default-position.rect-nicelabel--success:has(+ input:checked),
+.nicelabel-default-position.text-nicelabel--success:has(+ input:checked) {
   background-color: var(--color-success);
 }
 
 /* Info Color Variants */
 .circle-nicelabel--info + .nicelabel-default-position,
 .rect-nicelabel--info + .nicelabel-default-position,
-.text-nicelabel--info + .nicelabel-default-position {
+.text-nicelabel--info + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--info,
+.nicelabel-default-position.rect-nicelabel--info,
+.nicelabel-default-position.text-nicelabel--info {
   background-color: var(--color-info);
 }
 
 .circle-nicelabel--info:checked + .nicelabel-default-position,
 .rect-nicelabel--info:checked + .nicelabel-default-position,
-.text-nicelabel--info:checked + .nicelabel-default-position {
+.text-nicelabel--info:checked + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--info:has(+ input:checked),
+.nicelabel-default-position.rect-nicelabel--info:has(+ input:checked),
+.nicelabel-default-position.text-nicelabel--info:has(+ input:checked) {
   background-color: var(--color-info);
 }
 
 /* Warning Color Variants */
 .circle-nicelabel--warning + .nicelabel-default-position,
 .rect-nicelabel--warning + .nicelabel-default-position,
-.text-nicelabel--warning + .nicelabel-default-position {
+.text-nicelabel--warning + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--warning,
+.nicelabel-default-position.rect-nicelabel--warning,
+.nicelabel-default-position.text-nicelabel--warning {
   background-color: var(--color-warning);
 }
 
 .circle-nicelabel--warning:checked + .nicelabel-default-position,
 .rect-nicelabel--warning:checked + .nicelabel-default-position,
-.text-nicelabel--warning:checked + .nicelabel-default-position {
+.text-nicelabel--warning:checked + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--warning:has(+ input:checked),
+.nicelabel-default-position.rect-nicelabel--warning:has(+ input:checked),
+.nicelabel-default-position.text-nicelabel--warning:has(+ input:checked) {
   background-color: var(--color-warning);
 }
 
 /* Error Color Variants */
 .circle-nicelabel--error + .nicelabel-default-position,
 .rect-nicelabel--error + .nicelabel-default-position,
-.text-nicelabel--error + .nicelabel-default-position {
+.text-nicelabel--error + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--error,
+.nicelabel-default-position.rect-nicelabel--error,
+.nicelabel-default-position.text-nicelabel--error {
   background-color: var(--color-error);
 }
 
 .circle-nicelabel--error:checked + .nicelabel-default-position,
 .rect-nicelabel--error:checked + .nicelabel-default-position,
-.text-nicelabel--error:checked + .nicelabel-default-position {
+.text-nicelabel--error:checked + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--error:has(+ input:checked),
+.nicelabel-default-position.rect-nicelabel--error:has(+ input:checked),
+.nicelabel-default-position.text-nicelabel--error:has(+ input:checked) {
   background-color: var(--color-error);
 }
 
 /* Danger Color Variants */
 .circle-nicelabel--danger + .nicelabel-default-position,
 .rect-nicelabel--danger + .nicelabel-default-position,
-.text-nicelabel--danger + .nicelabel-default-position {
+.text-nicelabel--danger + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--danger,
+.nicelabel-default-position.rect-nicelabel--danger,
+.nicelabel-default-position.text-nicelabel--danger {
   background-color: var(--color-error);
 }
 
 .circle-nicelabel--danger:checked + .nicelabel-default-position,
 .rect-nicelabel--danger:checked + .nicelabel-default-position,
-.text-nicelabel--danger:checked + .nicelabel-default-position {
+.text-nicelabel--danger:checked + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--danger:has(+ input:checked),
+.nicelabel-default-position.rect-nicelabel--danger:has(+ input:checked),
+.nicelabel-default-position.text-nicelabel--danger:has(+ input:checked) {
   background-color: var(--color-error);
 }
 
 /* Neutral Color Variants */
 .circle-nicelabel--neutral + .nicelabel-default-position,
 .rect-nicelabel--neutral + .nicelabel-default-position,
-.text-nicelabel--neutral + .nicelabel-default-position {
+.text-nicelabel--neutral + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--neutral,
+.nicelabel-default-position.rect-nicelabel--neutral,
+.nicelabel-default-position.text-nicelabel--neutral {
   background-color: var(--color-neutral-80);
 }
 
 .circle-nicelabel--neutral:checked + .nicelabel-default-position,
 .rect-nicelabel--neutral:checked + .nicelabel-default-position,
-.text-nicelabel--neutral:checked + .nicelabel-default-position {
+.text-nicelabel--neutral:checked + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--neutral:has(+ input:checked),
+.nicelabel-default-position.rect-nicelabel--neutral:has(+ input:checked),
+.nicelabel-default-position.text-nicelabel--neutral:has(+ input:checked) {
   background-color: var(--color-neutral-80);
 }
 
@@ -1609,7 +1673,10 @@ input:not(.mm_button) {
 /* Disabled states for different checkbox colors */
 .circle-nicelabel--primary[disabled] + .nicelabel-default-position,
 .rect-nicelabel--primary[disabled] + .nicelabel-default-position,
-.text-nicelabel--primary[disabled] + .nicelabel-default-position {
+.text-nicelabel--primary[disabled] + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--primary:has(+ input[disabled]),
+.nicelabel-default-position.rect-nicelabel--primary:has(+ input[disabled]),
+.nicelabel-default-position.text-nicelabel--primary:has(+ input[disabled]) {
   background-color: var(--color-primary-20) !important;
   opacity: 0.5;
   cursor: not-allowed;
@@ -1617,7 +1684,10 @@ input:not(.mm_button) {
 
 .circle-nicelabel--secondary[disabled] + .nicelabel-default-position,
 .rect-nicelabel--secondary[disabled] + .nicelabel-default-position,
-.text-nicelabel--secondary[disabled] + .nicelabel-default-position {
+.text-nicelabel--secondary[disabled] + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--secondary:has(+ input[disabled]),
+.nicelabel-default-position.rect-nicelabel--secondary:has(+ input[disabled]),
+.nicelabel-default-position.text-nicelabel--secondary:has(+ input[disabled]) {
   background-color: var(--color-secondary-20) !important;
   opacity: 0.5;
   cursor: not-allowed;
@@ -1625,7 +1695,10 @@ input:not(.mm_button) {
 
 .circle-nicelabel--success[disabled] + .nicelabel-default-position,
 .rect-nicelabel--success[disabled] + .nicelabel-default-position,
-.text-nicelabel--success[disabled] + .nicelabel-default-position {
+.text-nicelabel--success[disabled] + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--success:has(+ input[disabled]),
+.nicelabel-default-position.rect-nicelabel--success:has(+ input[disabled]),
+.nicelabel-default-position.text-nicelabel--success:has(+ input[disabled]) {
   background-color: var(--color-success-lm-disable) !important;
   opacity: 0.5;
   cursor: not-allowed;
@@ -1633,7 +1706,10 @@ input:not(.mm_button) {
 
 .circle-nicelabel--info[disabled] + .nicelabel-default-position,
 .rect-nicelabel--info[disabled] + .nicelabel-default-position,
-.text-nicelabel--info[disabled] + .nicelabel-default-position {
+.text-nicelabel--info[disabled] + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--info:has(+ input[disabled]),
+.nicelabel-default-position.rect-nicelabel--info:has(+ input[disabled]),
+.nicelabel-default-position.text-nicelabel--info:has(+ input[disabled]) {
   background-color: var(--color-info-lm-disable) !important;
   opacity: 0.5;
   cursor: not-allowed;
@@ -1641,7 +1717,10 @@ input:not(.mm_button) {
 
 .circle-nicelabel--warning[disabled] + .nicelabel-default-position,
 .rect-nicelabel--warning[disabled] + .nicelabel-default-position,
-.text-nicelabel--warning[disabled] + .nicelabel-default-position {
+.text-nicelabel--warning[disabled] + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--warning:has(+ input[disabled]),
+.nicelabel-default-position.rect-nicelabel--warning:has(+ input[disabled]),
+.nicelabel-default-position.text-nicelabel--warning:has(+ input[disabled]) {
   background-color: var(--color-warning-lm-disable) !important;
   opacity: 0.5;
   cursor: not-allowed;
@@ -1649,7 +1728,10 @@ input:not(.mm_button) {
 
 .circle-nicelabel--error[disabled] + .nicelabel-default-position,
 .rect-nicelabel--error[disabled] + .nicelabel-default-position,
-.text-nicelabel--error[disabled] + .nicelabel-default-position {
+.text-nicelabel--error[disabled] + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--error:has(+ input[disabled]),
+.nicelabel-default-position.rect-nicelabel--error:has(+ input[disabled]),
+.nicelabel-default-position.text-nicelabel--error:has(+ input[disabled]) {
   background-color: var(--color-error-lm-disable) !important;
   opacity: 0.5;
   cursor: not-allowed;
@@ -1657,7 +1739,10 @@ input:not(.mm_button) {
 
 .circle-nicelabel--danger[disabled] + .nicelabel-default-position,
 .rect-nicelabel--danger[disabled] + .nicelabel-default-position,
-.text-nicelabel--danger[disabled] + .nicelabel-default-position {
+.text-nicelabel--danger[disabled] + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--danger:has(+ input[disabled]),
+.nicelabel-default-position.rect-nicelabel--danger:has(+ input[disabled]),
+.nicelabel-default-position.text-nicelabel--danger:has(+ input[disabled]) {
   background-color: var(--color-error-lm-disable) !important;
   opacity: 0.5;
   cursor: not-allowed;
@@ -1665,7 +1750,10 @@ input:not(.mm_button) {
 
 .circle-nicelabel--neutral[disabled] + .nicelabel-default-position,
 .rect-nicelabel--neutral[disabled] + .nicelabel-default-position,
-.text-nicelabel--neutral[disabled] + .nicelabel-default-position {
+.text-nicelabel--neutral[disabled] + .nicelabel-default-position,
+.nicelabel-default-position.circle-nicelabel--neutral:has(+ input[disabled]),
+.nicelabel-default-position.rect-nicelabel--neutral:has(+ input[disabled]),
+.nicelabel-default-position.text-nicelabel--neutral:has(+ input[disabled]) {
   background-color: var(--color-neutral-40) !important;
   opacity: 0.5;
   cursor: not-allowed;
