@@ -146,7 +146,7 @@
     } else if (label_theme == "text") {
       if (uselabel == true) {
         label_html =
-          '<label class="' +
+          '<label class="checkbox-nicelabel" ' +
           finalPositionClass +
           '" for="' +
           input_id +

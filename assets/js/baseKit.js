@@ -39,7 +39,11 @@ class Element {
       '<label class="mm_label" for="' +
         this.id +
         '" >' +
-        (this.lt + " :" + (this.bir ? '<span style="bir">*</span>' : "")) +
+        (this.lt +
+          " :" +
+          (this.bir
+            ? '<span style="bir" class="mm_label__required">*</span>'
+            : "")) +
         " </label>"
     );
     if (this.lcss)

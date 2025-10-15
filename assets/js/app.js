@@ -1,7 +1,9 @@
 $(document).ready(function () {
+  // Initialize global utilities
   window.bpms = new BPMS();
   window.utils = new Utils();
 
+  // Style main content
   $(".fj_maincontent").css({
     padding: "20px",
     "max-width": "1200px",
@@ -9,10 +11,9 @@ $(document).ready(function () {
     background: "#f8f9fa",
   });
 
-  // Component wrapper function for better layout
+  // Component wrapper function
   var createComponentWrapper = function (title, component) {
-    var wrapper = $('<div class="component-wrapper">');
-    wrapper.css({
+    var wrapper = $('<div class="component-wrapper">').css({
       "margin-bottom": "30px",
       padding: "20px",
       background: "white",
@@ -23,8 +24,7 @@ $(document).ready(function () {
       width: "50%",
     });
 
-    var titleElement = $('<h3 class="component-title">').text(title);
-    titleElement.css({
+    var titleElement = $('<h3 class="component-title">').text(title).css({
       margin: "0 0 15px 0",
       color: "#495057",
       "font-size": "16px",
@@ -33,218 +33,189 @@ $(document).ready(function () {
       "padding-bottom": "8px",
     });
 
-    wrapper.append(titleElement);
-    wrapper.append(component);
+    wrapper.append(titleElement).append(component);
     return wrapper;
   };
 
-  var testInt = function () {
-    var addad = new Int({
-      x0: 1,
-      x1: "نمره",
-      x2: 2,
-      x4: ["bx_username"],
-      x6: 12, // Full width
-      x9: {
-        v: "راهنمای دور کمر",
-        id: 10684,
-        icon: "/resource/files/1486222953647.png",
+  // Generic function to render a component
+  var renderComponent = function (ComponentClass, config, title) {
+    try {
+      var component = new ComponentClass(config);
+      var wrapper = createComponentWrapper(title, component.gEFA());
+      $(".fj_maincontent").append(wrapper);
+    } catch (error) {
+      console.error(`Error rendering ${title}:`, error);
+    }
+  };
+
+  // Component configurations
+  var components = [
+    {
+      class: Int,
+      config: {
+        btp: btoa(
+          JSON.stringify({
+            label: "number",
+            placeholder: "Enter number your phone number",
+            // placeholderText: "enter your phone number",
+            variant: "fill",
+            color: "primary",
+            radius: "radius-base",
+            disabled: false,
+            allowNegative: false,
+            allowDecimal: false,
+          })
+        ),
       },
-      x19: false,
-      x34: true,
-    });
-    var wrapper = createComponentWrapper(
-      "Input Number Component",
-      addad.gEFA()
-    );
-    $(".fj_maincontent").append(wrapper);
-  };
-
-  var testPassword = function () {
-    var password_section = new Password({
-      x0: 2,
-      x1: "رمز عبور",
-      x2: 2,
-      x4: ["bx_password"],
-      x6: 12, // Full width
-      x9: {
-        v: "راهنمای دور کمر",
-        id: 10684,
-        icon: "/resource/files/1486222953647.png",
+      title: "Number Input Component",
+    },
+    {
+      class: Password,
+      config: {
+        btp: btoa(
+          JSON.stringify({
+            label: "password",
+            variant: "fill", // fill, outline, ghost, disable
+            color: "primary", // primary, secondary, danger, warning, success
+            radius: "radius-base",
+            labelText: "password",
+            disabled: false,
+          })
+        ),
       },
-      x19: false,
-      x34: true,
-    });
-    var wrapper = createComponentWrapper(
-      "Password Input Component",
-      password_section.gEFA()
-    );
-    $(".fj_maincontent").append(wrapper);
-  };
-
-  var testTextArea = function () {
-    var addad = new TextArea({
-      x0: 2,
-      x2: 2,
-      x4: ["bx_password"],
-      x6: 12, // Full width
-      x19: false,
-    });
-    var wrapper = createComponentWrapper("Text Area Component", addad.gEFA());
-    $(".fj_maincontent").append(wrapper);
-  };
-
-  var button = function () {
-    var button_section = new Button({
-      btp: btoa(
-        JSON.stringify({
-          text: "send message",
-          variant: "fill",
-          color: "primary",
-          radius: "radius-base",
-        })
-      ),
-    });
-    var wrapper = createComponentWrapper(
-      "Button Component",
-      button_section.gEFA()
-    );
-    $(".fj_maincontent").append(wrapper);
-  };
-
-  var checkbox = function () {
-    var checkbox_section = new Checkbox({
-      btp: btoa(
-        JSON.stringify({
-          type: "checkbox", // checkbox یا radio
-          shape: "rect", // circle, rect, text
-          color: "success", // primary, secondary, success, info, warning, error, danger, neutral
-          checked: false, // مقدار اولیه
-          disabled: false, // حالت disabled
-          checked_text: "acttive", // متن حالت فعال
-          unchecked_text: "inactive", // متن حالت غیرفعال
-        })
-      ),
-    });
-    var wrapper = createComponentWrapper(
-      "Checkbox Component",
-      checkbox_section.gEFA()
-    );
-    $(".fj_maincontent").append(wrapper);
-  };
-
-  var testUCG = function () {
-    var ucg = new UCG({ x0: 2, x3: [{ v: 123 }], x2: 2, x6: 12, x19: false });
-    var wrapper = createComponentWrapper("UCG Component", ucg.gEFA());
-    $(".fj_maincontent").append(wrapper);
-  };
-
-  var textEditor = function () {
-    var addad = new TextEditor({
-      x0: 2,
-      x2: 2,
-      x4: ["bx_password"],
-      x6: 12, // Full width
-      x19: false,
-    });
-    var wrapper = createComponentWrapper("Text Editor Component", addad.gEFA());
-    $(".fj_maincontent").append(wrapper);
-  };
-
-  var timepicker = function () {
-    var timepicker_section = new TimePicker({
-      x0: 6,
-      x1: "ساعت",
-      x2: 2,
-      x6: 12, // Full width
-      x19: false,
-    });
-    var wrapper = createComponentWrapper(
-      "Time Picker Component",
-      timepicker_section.gEFA()
-    );
-    $(".fj_maincontent").append(wrapper);
-  };
-
-  var radio = function () {
-    var radiobutton_section = new Radio({
-      x0: 12,
-      x2: 2,
-      x3: [{ id: 2, v: "عالی" }],
-      x6: 12, // Full width
-      x19: false,
-    });
-    var wrapper = createComponentWrapper(
-      "Radio Button Component",
-      radiobutton_section.gEFA()
-    );
-    $(".fj_maincontent").append(wrapper);
-  };
-
-  var line = function () {
-    var line_section = new Line({
-      x0: 12,
-      x2: 2,
-      x6: 12,
-      x19: false,
-    });
-    var wrapper = createComponentWrapper(
-      "Line Separator Component",
-      line_section.gEFA()
-    );
-    $(".fj_maincontent").append(wrapper);
-  };
-
-  var gridview = function () {
-    var gridview_section = new GridView({
-      x0: 6,
-      x2: 2,
-      x3: [{ id: 1, v: 2 }],
-      x6: 12, // Full width
-      x19: false,
-    });
-    var wrapper = createComponentWrapper(
-      "Grid View Component",
-      gridview_section.gEFA()
-    );
-    $(".fj_maincontent").append(wrapper);
-  };
-
-  var chart = function () {
-    var chart_section = new Chart({
-      x0: 6,
-      x2: 2,
-      x3: [{ id: 1, v: 2 }],
-      x6: 12, // Full width
-      x19: false,
-    });
-    var wrapper = createComponentWrapper(
-      "Chart Component",
-      chart_section.gEFA()
-    );
-    $(".fj_maincontent").append(wrapper);
-  };
-
-  var datepicker = function () {
-    var datepicker_section = new DatePicker({
-      x0: 6,
-      x1: "تاریخ",
-      x2: 2,
-      x6: 12, // Full width
-      x19: false,
-    });
-    var wrapper = createComponentWrapper(
-      "Date Picker Component",
-      datepicker_section.gEFA()
-    );
-    $(".fj_maincontent").append(wrapper);
-  };
+      title: "Password Input Component",
+    },
+    {
+      class: TextEditor,
+      config: {
+        btp: btoa(
+          JSON.stringify({
+            label: "descriptions",
+            placeholder: "text Here..",
+            height: "250px",
+            onChange: (val) => console.log("Editor content:", val),
+          })
+        ),
+      },
+      title: "Password Input Component",
+    },
+    {
+      class: Text,
+      config: {
+        btp: btoa(
+          JSON.stringify({
+            label: "username",
+            variant: "fill", // fill, outline, ghost, disable
+            color: "primary", // primary, secondary, danger, warning, success
+            radius: "radius-base",
+            disabled: false,
+          })
+        ),
+      },
+      title: "txt Input Component",
+    },
+    {
+      class: TextArea,
+      config: {
+        btp: btoa(
+          JSON.stringify({
+            label: "description",
+            placeholder: "Type your message...",
+            variant: "fill",
+            color: "primary",
+            radius: "radius-base",
+            rows: 4,
+            disabled: false,
+          })
+        ),
+      },
+      title: "Text Area Component",
+    },
+    {
+      class: Button,
+      config: {
+        btp: btoa(
+          JSON.stringify({
+            text: "send message",
+            variant: "fill",
+            color: "primary",
+            radius: "radius-base",
+          })
+        ),
+      },
+      title: "Button Component",
+    },
+    {
+      class: Checkbox,
+      config: {
+        btp: btoa(
+          JSON.stringify({
+            labelText: "option-1",
+            elementId: "unique-element-id",
+            required: true,
+            type: "checkbox",
+            shape: "rect",
+            color: "primary",
+            checked: false,
+            disabled: false,
+            checkedText: "accepted",
+            uncheckedText: "not accepted",
+            positionClass: "nicelabel-default-position",
+            events: {
+              change: function (params) {
+                console.log("status changed to:", params.t.gv());
+              },
+            },
+          })
+        ),
+      },
+      title: "Checkbox Component",
+    },
+    {
+      class: DatePicker,
+      config: {
+        btp: btoa(
+          JSON.stringify({
+            label: "Date",
+            placeholder: "----/--/--",
+            variant: "fill",
+            color: "primary",
+            radius: "radius-base",
+            disabled: false,
+          })
+        ),
+      },
+      title: "Date Picker Component",
+    },
+    {
+      class: FileUploader,
+      config: {
+        btp: btoa(
+          JSON.stringify({
+            label: "upload file",
+            accept: "image/png,image/jpeg",
+            multiple: true,
+            onChange: (file) => console.log("file have been choosen:", file),
+          })
+        ),
+      },
+    },
+    {
+      class: Line,
+      config: {
+        x0: 12,
+        x2: 2,
+        x6: 12,
+        x19: false,
+      },
+      title: "Line Separator Component",
+    },
+  ];
 
   // Main function to render all components
   var renderStorybook = function () {
     // Add main title
-    var mainTitle = $('<h1 class="storybook-title">').text("Components");
-    mainTitle.css({
+    var mainTitle = $('<h1 class="storybook-title">').text("Components").css({
       width: "100%",
       padding: "1rem",
       background: "gray",
@@ -257,19 +228,9 @@ $(document).ready(function () {
     $(".fj_maincontent").append(mainTitle);
 
     // Render all components
-    testInt();
-    testPassword();
-    testTextArea();
-    button();
-    checkbox();
-    // textEditor();
-    // timepicker();
-    // datepicker();
-    // radio();
-    // gridview();
-    // chart();
-
-    console.log("Storybook rendered successfully");
+    components.forEach(function ({ class: ComponentClass, config, title }) {
+      renderComponent(ComponentClass, config, title);
+    });
   };
 
   renderStorybook();
