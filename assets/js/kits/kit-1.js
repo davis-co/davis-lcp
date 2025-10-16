@@ -1,13 +1,13 @@
 class Password extends Input {
   cT() {
     const cfg = this.btp || {};
-    const variant = cfg.variant || "fill";
+    const variant = "outline"; // force single visual style
     const color = cfg.color || "primary";
     const radius = cfg.radius || "radius-base";
     const labelText = cfg.label || "Password";
     const placeholderText = cfg.placeholder || "Enter your password";
 
-    const isDisabled = variant === "disable" || cfg.disabled;
+    const isDisabled = cfg.variant === "disable" || cfg.disabled;
 
     this.target = $(`
       <div class="float-label mm_input mm_input--${variant} mm_input--${color} mm_input--${radius}">
@@ -418,10 +418,10 @@ class TextEditor extends Input {
     const height = cfg.height || "200px";
     const readOnly = cfg.readOnly || false;
     const toolbar = cfg.toolbar || [
-      ['bold', 'italic', 'underline', 'strike'],
-      [{ list: 'ordered' }, { list: 'bullet' }],
-      ['link', 'image'],
-      ['clean']
+      ["bold", "italic", "underline", "strike"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link", "image"],
+      ["clean"],
     ];
 
     // container اصلی
@@ -693,3 +693,549 @@ class Checkbox extends Input {
     return { status: this.lv != this.gV() };
   }
 }
+class Select extends Input {
+  cT() {
+    const cfg = this.btp || {};
+    const variant = cfg.variant || "fill";
+    const color = cfg.color || "primary";
+    const radius = cfg.radius || "radius-base";
+    const labelText = cfg.label || "Select";
+    const placeholderText = cfg.placeholder || "Choose an option";
+    const options = cfg.options || [
+      { value: "", text: placeholderText },
+      { value: "option1", text: "Option 1" },
+      { value: "option2", text: "Option 2" },
+      { value: "option3", text: "Option 3" },
+    ];
+    const multiple = cfg.multiple || false;
+    const required = cfg.required || false;
+    const isDisabled = variant === "disable" || cfg.disabled;
+
+    // --- MULTI SELECT ---
+    if (multiple) {
+      this.mode = "multi";
+      this.selectedValues = [];
+      this.options = options.filter((opt) => opt.value !== "");
+
+      this.target = $(`
+        <div class="float-label mm_input mm_input--${variant} mm_input--${color} mm_input--${radius} mm_multiselect">
+          <div class="mm_multiselect_container" ${isDisabled ? "disabled" : ""}>
+            <div class="mm_multiselect_tags"></div>
+            <div class="mm_multiselect_input">
+              <input type="text" class="mm_multiselect_search" placeholder="${placeholderText}" ${
+        isDisabled ? "disabled" : ""
+      } />
+              <div class="mm_multiselect_arrow"></div>
+            </div>
+            <div class="mm_multiselect_dropdown">
+              ${this.options
+                .map(
+                  (option) =>
+                    `<div class="mm_multiselect_option" data-value="${option.value}" tabindex="0" role="option">${option.text}</div>`
+                )
+                .join("")}
+            </div>
+          </div>
+          <label>${labelText}</label>
+        </div>
+      `);
+
+      this.initializeMultiselect(cfg);
+    }
+
+    // --- SINGLE SELECT ---
+    else {
+      this.mode = "single";
+      this.options = options;
+
+      this.target = $(`
+        <div class="float-label mm_input mm_input--${variant} mm_input--${color} mm_input--${radius} mm_multiselect mm_singleselect">
+          <div class="mm_multiselect_container" ${isDisabled ? "disabled" : ""}>
+            <div class="mm_multiselect_input">
+              <input type="text" class="mm_multiselect_search" placeholder="${placeholderText}" ${
+        isDisabled ? "disabled" : ""
+      } />
+              <div class="mm_multiselect_arrow"></div>
+            </div>
+            <div class="mm_multiselect_dropdown">
+              ${this.options
+                .map(
+                  (opt) =>
+                    `<div class=\"mm_multiselect_option\" data-value=\"${opt.value}\" tabindex=\"0\" role=\"option\">${opt.text}</div>`
+                )
+                .join("")}
+            </div>
+          </div>
+          <label>${labelText}</label>
+        </div>
+      `);
+
+      this.initializeSingleselect(cfg);
+    }
+
+    this.cTB();
+    this.cTF();
+  }
+
+  // --- MULTI SELECT HANDLER ---
+  initializeMultiselect(cfg) {
+    const container = this.target.find(".mm_multiselect_container");
+    const root = this.target;
+    const tagsContainer = this.target.find(".mm_multiselect_tags");
+    const searchInput = this.target.find(".mm_multiselect_search");
+    const dropdown = this.target.find(".mm_multiselect_dropdown");
+    const arrow = this.target.find(".mm_multiselect_arrow");
+
+    // وضعیت dropdown
+    this.isDropdownOpen = false;
+
+    // Prevent text/arrow overlap (moved to CSS ideally; keep as fallback)
+    if (!searchInput[0].style.paddingRight)
+      searchInput.css({ paddingRight: "28px" });
+
+    const toggleDropdown = () => {
+      if (container.is("[disabled]")) return;
+
+      this.isDropdownOpen = !this.isDropdownOpen;
+      dropdown.toggleClass("open", this.isDropdownOpen);
+      arrow.toggleClass("open", this.isDropdownOpen);
+
+      if (this.isDropdownOpen) {
+        searchInput.focus();
+        // موقعیت‌یابی dropdown
+        positionDropdown();
+      } else {
+        searchInput.val("");
+        filterOptions("");
+      }
+    };
+
+    const closeDropdown = () => {
+      this.isDropdownOpen = false;
+      dropdown.removeClass("open");
+      arrow.removeClass("open");
+      searchInput.val("");
+      filterOptions("");
+    };
+
+    const positionDropdown = () => {
+      const containerRect = container[0].getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const spaceBelow = viewportHeight - containerRect.bottom;
+      const spaceAbove = containerRect.top;
+
+      // اگر فضای کافی در پایین نیست، dropdown را بالا نمایش بده
+      if (spaceBelow < 200 && spaceAbove > spaceBelow) {
+        dropdown.css({
+          top: "auto",
+          bottom: "100%",
+          "max-height": Math.min(spaceAbove - 20, 240) + "px",
+        });
+      } else {
+        dropdown.css({
+          top: "calc(100% + 4px)",
+          bottom: "auto",
+          "max-height": Math.min(spaceBelow - 20, 240) + "px",
+        });
+      }
+    };
+
+    const updateHasValue = () => {
+      if (this.selectedValues.length > 0) root.addClass("has-value");
+      else root.removeClass("has-value");
+    };
+
+    const addTag = (value, text) => {
+      if (this.selectedValues.includes(value)) return;
+      this.selectedValues.push(value);
+
+      const tag = $(`
+        <div class="mm_multiselect_tag" data-value="${value}">
+          <span class="mm_multiselect_tag_text">${text}</span>
+          <span class="mm_multiselect_tag_remove" role="button" aria-label="Remove ${text}">×</span>
+        </div>
+      `);
+      tagsContainer.append(tag);
+
+      tag.find(".mm_multiselect_tag_remove").on("click", (e) => {
+        e.stopPropagation();
+        removeTag(value);
+      });
+
+      dropdown
+        .find(`[data-value="${value}"]`)
+        .addClass("mm_multiselect_option--selected");
+
+      updateHasValue();
+      if (typeof cfg.onChange === "function") cfg.onChange(this.selectedValues);
+    };
+
+    const removeTag = (value) => {
+      this.selectedValues = this.selectedValues.filter((v) => v !== value);
+      tagsContainer.find(`[data-value="${value}"]`).remove();
+      dropdown
+        .find(`[data-value="${value}"]`)
+        .removeClass("mm_multiselect_option--selected");
+
+      updateHasValue();
+      if (typeof cfg.onChange === "function") cfg.onChange(this.selectedValues);
+    };
+
+    const filterOptions = (term) => {
+      let visibleCount = 0;
+      dropdown.find(".mm_multiselect_option").each(function () {
+        const text = $(this).text().toLowerCase();
+        const matches = text.includes(term.toLowerCase());
+        $(this).toggle(matches);
+        if (matches) visibleCount++;
+      });
+
+      // Show/hide empty state
+      dropdown.find(".mm_multiselect_empty").remove();
+      if (visibleCount === 0 && term) {
+        dropdown.append(
+          '<div class="mm_multiselect_empty">No options found</div>'
+        );
+      }
+    };
+
+    // Event Listeners
+    container.on("click", (e) => {
+      // اگر روی تگ کلیک شده، dropdown باز نشود
+      if ($(e.target).closest(".mm_multiselect_tag").length) return;
+      toggleDropdown();
+    });
+
+    searchInput.on("click", (e) => {
+      e.stopPropagation();
+      if (!this.isDropdownOpen) toggleDropdown();
+    });
+
+    searchInput.on("input", (e) => filterOptions(e.target.value));
+
+    searchInput.on("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeDropdown();
+      } else if (
+        e.key === "Backspace" &&
+        !searchInput.val() &&
+        this.selectedValues.length > 0
+      ) {
+        // حذف آخرین تگ با Backspace
+        const lastValue = this.selectedValues[this.selectedValues.length - 1];
+        removeTag(lastValue);
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        // اگر گزینه‌ای هایلایت شده است، آن را انتخاب کن
+        const highlightedOption = dropdown
+          .find(".mm_multiselect_option:hover")
+          .first();
+        if (highlightedOption.length) {
+          highlightedOption.click();
+        }
+      }
+    });
+
+    dropdown.on("click", ".mm_multiselect_option", (e) => {
+      e.stopPropagation();
+      const opt = $(e.currentTarget);
+      const value = opt.data("value");
+      const text = opt.text();
+
+      if (this.selectedValues.includes(value)) {
+        removeTag(value);
+      } else {
+        addTag(value, text);
+      }
+
+      // بعد از انتخاب، focus به search input برگردد
+      searchInput.focus();
+    });
+
+    dropdown.on("keydown", ".mm_multiselect_option", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        $(e.currentTarget).click();
+      }
+    });
+
+    // بستن dropdown با کلیک خارج
+    $(document).on("click", (e) => {
+      if (!container.is(e.target) && container.has(e.target).length === 0) {
+        closeDropdown();
+      }
+    });
+
+    // مدیریت resize برای موقعیت‌یابی مجدد dropdown
+    $(window).on("resize", () => {
+      if (this.isDropdownOpen) {
+        positionDropdown();
+      }
+    });
+
+    // مدیریت scroll برای موقعیت‌یابی مجدد dropdown
+    $(window).on("scroll", () => {
+      if (this.isDropdownOpen) {
+        positionDropdown();
+      }
+    });
+
+    // مقداردهی اولیه
+    if (cfg.selectedValues && Array.isArray(cfg.selectedValues)) {
+      cfg.selectedValues.forEach((value) => {
+        const opt = this.options.find((o) => o.value === value);
+        if (opt) addTag(value, opt.text);
+      });
+    }
+
+    updateHasValue();
+  }
+
+  // --- GET VALUE ---
+  gV() {
+    if (this.mode === "multi" || this.target.hasClass("mm_multiselect")) {
+      return this.selectedValues || [];
+    }
+    if (this.mode === "single") {
+      return this.selectedValue != null ? this.selectedValue : "";
+    }
+    const select = this.target.find("select");
+    return select.val() || "";
+  }
+
+  // --- SET VALUE ---
+  sV(value) {
+    if (this.mode === "multi" || this.target.hasClass("mm_multiselect")) {
+      // ابتدا همه تگ‌های فعلی را پاک کنید
+      const tagsContainer = this.target.find(".mm_multiselect_tags");
+      const dropdown = this.target.find(".mm_multiselect_dropdown");
+
+      tagsContainer.empty();
+      dropdown
+        .find(".mm_multiselect_option")
+        .removeClass("mm_multiselect_option--selected");
+
+      // مقدار جدید را تنظیم کنید
+      this.selectedValues = Array.isArray(value) ? [...value] : [];
+
+      // تگ‌های جدید را اضافه کنید
+      this.selectedValues.forEach((val) => {
+        const opt = this.options.find((o) => o.value === val);
+        if (opt) {
+          const tag = $(`
+            <div class="mm_multiselect_tag" data-value="${val}">
+              <span class="mm_multiselect_tag_text">${opt.text}</span>
+              <span class="mm_multiselect_tag_remove" role="button" aria-label="Remove ${opt.text}">×</span>
+            </div>
+          `);
+          tagsContainer.append(tag);
+
+          tag.find(".mm_multiselect_tag_remove").on("click", (e) => {
+            e.stopPropagation();
+            this.selectedValues = this.selectedValues.filter((v) => v !== val);
+            tag.remove();
+            dropdown
+              .find(`[data-value="${val}"]`)
+              .removeClass("mm_multiselect_option--selected");
+
+            if (this.selectedValues.length > 0)
+              this.target.addClass("has-value");
+            else this.target.removeClass("has-value");
+          });
+
+          dropdown
+            .find(`[data-value="${val}"]`)
+            .addClass("mm_multiselect_option--selected");
+        }
+      });
+
+      if (this.selectedValues.length > 0) this.target.addClass("has-value");
+      else this.target.removeClass("has-value");
+      return;
+    }
+
+    if (this.mode === "single") {
+      const dropdown = this.target.find(".mm_multiselect_dropdown");
+      const searchInput = this.target.find(".mm_multiselect_search");
+      this.selectedValue = value || "";
+
+      dropdown
+        .find(".mm_multiselect_option")
+        .removeClass("mm_multiselect_option--selected");
+      if (this.selectedValue !== "") {
+        const opt = this.options.find((o) => o.value === this.selectedValue);
+        if (opt) {
+          dropdown
+            .find(`[data-value="${this.selectedValue}"]`)
+            .addClass("mm_multiselect_option--selected");
+          searchInput.val(opt.text);
+          this.target.addClass("has-value");
+        } else {
+          searchInput.val("");
+          this.target.removeClass("has-value");
+        }
+      } else {
+        searchInput.val("");
+        this.target.removeClass("has-value");
+      }
+      return;
+    }
+
+    const select = this.target.find("select");
+    select.val(value);
+    if (value) this.target.addClass("has-value");
+    else this.target.removeClass("has-value");
+  }
+
+  cSFSDTS() {
+    return { status: this.lv != this.gV() };
+  }
+}
+
+// Single-select initializer to mirror multiselect UI/UX
+Select.prototype.initializeSingleselect = function (cfg) {
+  const container = this.target.find(".mm_multiselect_container");
+  const searchInput = this.target.find(".mm_multiselect_search");
+  const dropdown = this.target.find(".mm_multiselect_dropdown");
+  const arrow = this.target.find(".mm_multiselect_arrow");
+
+  this.isDropdownOpen = false;
+  const searchable = cfg && cfg.searchable === true;
+
+  // Prevent text/arrow overlap and make non-searchable behave like a button
+  searchInput.css({ paddingRight: "28px" });
+  if (!searchable) {
+    searchInput.prop("readonly", true);
+    searchInput.css({ cursor: "pointer" });
+  }
+
+  const toggleDropdown = () => {
+    if (container.is("[disabled]")) return;
+    this.isDropdownOpen = !this.isDropdownOpen;
+    dropdown.toggleClass("open", this.isDropdownOpen);
+    arrow.toggleClass("open", this.isDropdownOpen);
+    if (this.isDropdownOpen) {
+      searchInput.focus();
+      positionDropdown();
+    } else {
+      if (!this.selectedValue) searchInput.val("");
+      filterOptions("");
+    }
+  };
+
+  const closeDropdown = () => {
+    this.isDropdownOpen = false;
+    dropdown.removeClass("open");
+    arrow.removeClass("open");
+    filterOptions("");
+  };
+
+  const positionDropdown = () => {
+    const containerRect = container[0].getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const spaceBelow = viewportHeight - containerRect.bottom;
+    const spaceAbove = containerRect.top;
+    if (spaceBelow < 200 && spaceAbove > spaceBelow) {
+      dropdown.css({
+        top: "auto",
+        bottom: "100%",
+        "max-height": Math.min(spaceAbove - 20, 240) + "px",
+      });
+    } else {
+      dropdown.css({
+        top: "calc(100% + 4px)",
+        bottom: "auto",
+        "max-height": Math.min(spaceBelow - 20, 240) + "px",
+      });
+    }
+  };
+
+  const filterOptions = (term) => {
+    dropdown.find(".mm_multiselect_option").each(function () {
+      const text = $(this).text().toLowerCase();
+      const matches = text.includes(term.toLowerCase());
+      $(this).toggle(matches);
+    });
+  };
+
+  // Initialize from preselected option
+  const initialSelected = this.options.find((o) => o.selected) || null;
+  if (initialSelected && initialSelected.value !== "") {
+    this.selectedValue = initialSelected.value;
+    searchInput.val(initialSelected.text);
+    this.target.addClass("has-value");
+    dropdown
+      .find(`[data-value="${this.selectedValue}"]`)
+      .addClass("mm_multiselect_option--selected");
+  } else {
+    this.selectedValue = "";
+  }
+
+  container.on("click", (e) => {
+    if ($(e.target).closest(".mm_multiselect_dropdown").length) return;
+    toggleDropdown();
+  });
+
+  searchInput.on("click", (e) => {
+    e.stopPropagation();
+    if (!this.isDropdownOpen) toggleDropdown();
+  });
+
+  if (searchable) {
+    searchInput.on("input", (e) => filterOptions(e.target.value));
+  }
+
+  searchInput.on("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeDropdown();
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      const highlightedOption = dropdown
+        .find(".mm_multiselect_option:hover")
+        .first();
+      if (highlightedOption.length) highlightedOption.click();
+    }
+  });
+
+  dropdown.on("click", ".mm_multiselect_option", (e) => {
+    e.stopPropagation();
+    const opt = $(e.currentTarget);
+    const value = opt.data("value");
+    const text = opt.text();
+
+    dropdown
+      .find(".mm_multiselect_option")
+      .removeClass("mm_multiselect_option--selected");
+    opt.addClass("mm_multiselect_option--selected");
+
+    this.selectedValue = value;
+    searchInput.val(value ? text : "");
+    if (value) this.target.addClass("has-value");
+    else this.target.removeClass("has-value");
+
+    if (typeof cfg.onChange === "function") cfg.onChange(this.selectedValue);
+
+    closeDropdown();
+  });
+
+  dropdown.on("keydown", ".mm_multiselect_option", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      $(e.currentTarget).click();
+    }
+  });
+
+  $(document).on("click", (e) => {
+    if (!container.is(e.target) && container.has(e.target).length === 0) {
+      closeDropdown();
+    }
+  });
+
+  $(window).on("resize", () => {
+    if (this.isDropdownOpen) positionDropdown();
+  });
+
+  $(window).on("scroll", () => {
+    if (this.isDropdownOpen) positionDropdown();
+  });
+};

@@ -362,83 +362,61 @@ input:not(.mm_button) {
 
 /* ====================================== */
 /* 🪄 Float Behavior */
+/* ====================================== */
+/* 🎯 Float Label System - Unified */
+.float-label.has-value label,
 .float-label input:focus + label,
-.float-label input:not(:placeholder-shown) + label,
-.float-label textarea:focus + label,
-.float-label textarea:not(:placeholder-shown) + label {
-  font-size: 8px;
-  top: 10px;
-  color: var(--_accent-color);
-  background-color: var(--color-neutral-10);
-  border: 1px solid var(--_accent-color);
-  opacity: 100;
-  padding: var(--spacing-1) var(--spacing-2) var(--spacing-00) var(--spacing-2);
-  border-radius: var(--radius-2);
-  transform: translateY(-50%) translateY(-60%); /* visually centers better */
+.float-label select:focus + label,
+.float-label .mm_multiselect_container:focus-within + label {
+  top: 7px;
+  padding: 0 var(--spacing-2);
+  border-radius: var(--radius-base);
+  transform: translateY(-100%) scale(0.9);
+  opacity: 1;
+  background-color: var(--color-white);
+  color: var(--_accent-color, var(--color-primary));
 }
 
 /* ====================================== */
 /* 🎨 Variant System */
-.mm_input--fill input {
-  background-color: var(--color-neutral-30);
-  border: 1px solid var(--color-neutral-60);
-}
+
+.mm_input--fill input,
 .mm_input--fill textarea {
   background-color: var(--color-neutral-30);
   border: 1px solid var(--color-neutral-60);
 }
-
-.mm_input--fill input:focus {
-  border-color: var(--_accent-color);
-  color: var(--_accent-color);
-}
+.mm_input--fill input:focus,
 .mm_input--fill textarea:focus {
   border-color: var(--_accent-color);
   color: var(--_accent-color);
 }
 
 /* outline */
-.mm_input--outline input {
-  background-color: transparent;
-  border: 1px solid var(--color-neutral-40);
-}
+.mm_input--outline input,
 .mm_input--outline textarea {
   background-color: transparent;
   border: 1px solid var(--color-neutral-40);
 }
-.mm_input--outline input:focus {
-  border-color: var(--_accent-color);
-}
+.mm_input--outline input:focus,
 .mm_input--outline textarea:focus {
   border-color: var(--_accent-color);
 }
 
 /* ghost */
-.mm_input--ghost input {
-  background-color: transparent;
-  border: none;
-  border-bottom: 1px solid var(--color-neutral-40);
-  border-radius: 0;
-}
+.mm_input--ghost input,
 .mm_input--ghost textarea {
   background-color: transparent;
   border: none;
   border-bottom: 1px solid var(--color-neutral-40);
   border-radius: 0;
 }
-.mm_input--ghost input:focus {
-  border-bottom-color: var(--_accent-color);
-}
+.mm_input--ghost input:focus,
 .mm_input--ghost textarea:focus {
   border-bottom-color: var(--_accent-color);
 }
 
 /* disable */
-.mm_input--disable input {
-  background-color: var(--color-neutral-20);
-  color: var(--color-neutral-60);
-  cursor: not-allowed;
-}
+.mm_input--disable input,
 .mm_input--disable textarea {
   background-color: var(--color-neutral-20);
   color: var(--color-neutral-60);
@@ -465,34 +443,486 @@ input:not(.mm_button) {
 
 /* ====================================== */
 /* 🧱 Radius Tokens */
-.mm_input--radius-base input {
+/* Input radius utilities (unified for inputs and multiselect parts) */
+.mm_input--radius-1 input,
+.mm_input--radius-1 .mm_multiselect_container,
+.mm_input--radius-1 .mm_multiselect_dropdown {
+  border-radius: var(--radius-1);
+}
+
+.mm_input--radius-2 input,
+.mm_input--radius-2 .mm_multiselect_container,
+.mm_input--radius-2 .mm_multiselect_dropdown {
+  border-radius: var(--radius-2);
+}
+
+.mm_input--radius-base input,
+.mm_input--radius-base .mm_multiselect_container,
+.mm_input--radius-base .mm_multiselect_dropdown {
   border-radius: var(--radius-base);
 }
-.mm_input--radius-md input {
-  border-radius: var(--radius-md);
+
+.mm_input--radius-3 input,
+.mm_input--radius-3 .mm_multiselect_container,
+.mm_input--radius-3 .mm_multiselect_dropdown {
+  border-radius: var(--radius-3);
 }
-.mm_input--radius-lg input {
-  border-radius: var(--radius-lg);
+
+.mm_input--radius-4 input,
+.mm_input--radius-4 .mm_multiselect_container,
+.mm_input--radius-4 .mm_multiselect_dropdown {
+  border-radius: var(--radius-4);
 }
-.mm_input--radius-xl input {
-  border-radius: var(--radius-xl);
+
+.mm_input--radius-5 input,
+.mm_input--radius-5 .mm_multiselect_container,
+.mm_input--radius-5 .mm_multiselect_dropdown {
+  border-radius: var(--radius-5);
+}
+
+.mm_input--radius-6 input,
+.mm_input--radius-6 .mm_multiselect_container,
+.mm_input--radius-6 .mm_multiselect_dropdown {
+  border-radius: var(--radius-6);
+}
+
+.mm_input--radius-7 input,
+.mm_input--radius-7 .mm_multiselect_container,
+.mm_input--radius-7 .mm_multiselect_dropdown {
+  border-radius: var(--radius-7);
+}
+
+.mm_input--radius-8 input,
+.mm_input--radius-8 .mm_multiselect_container,
+.mm_input--radius-8 .mm_multiselect_dropdown {
+  border-radius: var(--radius-8);
 }
 
 /* ====================================== */
-/* ✨ Small UX Improvements */
+/* 🔽 Select Component */
+.mm_select {
+  width: 100%;
+  padding: var(--spacing-2) var(--spacing-4) var(--spacing-2) var(--spacing-2);
+  font-size: var(--font-size-md);
+  border-radius: var(--radius-base);
+  outline: 1px solid var(--_accent-color);
+  border: none;
+  color: var(--color-neutral-100);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  appearance: none;
+}
 
-.float-label input::placeholder {
+.mm_select:hover:not(:disabled) {
+  outline-color: var(--_accent-color);
+}
+
+.mm_select:focus {
+  outline-color: var(--_accent-color);
+  box-shadow: 0 0 0 3px rgba(var(--_accent-color-rgb), 0.15);
+}
+
+/* Select variants reuse input system */
+.mm_input--fill .mm_select {
+  outline: 1px solid var(--color-neutral-60);
+}
+.mm_input--fill .mm_select:hover:not(:disabled) {
+  outline-color: var(--color-neutral-70);
+}
+
+.mm_input--outline .mm_select {
+  background-color: transparent;
+  outline: 1px solid var(--color-neutral-40);
+}
+.mm_input--outline .mm_select:hover:not(:disabled) {
+  outline-color: var(--color-neutral-60);
+}
+
+.mm_input--ghost .mm_select {
+  background-color: transparent;
+  outline: none;
+  outline-bottom: 1px solid var(--color-neutral-40);
+  border-radius: 0;
+  padding-right: var(--spacing-8);
+}
+.mm_input--ghost .mm_select:hover:not(:disabled) {
+  outline-bottom-color: var(--color-neutral-60);
+}
+
+/* Disable state */
+.mm_input--disable .mm_select,
+.mm_select:disabled {
+  color: var(--color-neutral-50);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Multiple select */
+.mm_select[multiple] {
+  background-image: none;
+  min-height: 100px;
+  padding-right: 16px;
+}
+
+/* ====================================== */
+/* 🧩 Multiselect Component - IMPROVED */
+.mm_multiselect {
+  position: relative;
+  min-height: 48px;
+}
+
+.mm_multiselect_container {
+  width: 100%;
+  background: var(--color-white);
+  border: 1px solid var(--color-neutral-60);
+  border-radius: var(--radius-base);
+  transition: all 0.2s ease;
+  padding: var(--spacing-2) var(--spacing-3);
+  position: relative;
+  cursor: pointer;
+  min-height: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.mm_multiselect_container:hover:not([disabled]) {
+  border-color: var(--color-neutral-70);
+  background-color: var(--color-neutral-20);
+}
+
+.mm_multiselect_container:focus-within {
+  border-color: var(--_accent-color);
+  box-shadow: 0 0 0 3px rgba(var(--_accent-color-rgb), 0.15);
+}
+
+.mm_multiselect_container[disabled] {
+  background-color: var(--color-neutral-30);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Moved arrow to the right side for better UX */
+.mm_multiselect_arrow {
+  position: absolute;
+  right: var(--spacing-3);
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.2s ease;
+  font-size: 14px;
+  color: var(--color-neutral-60);
+  pointer-events: none;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mm_multiselect_arrow::before {
+  content: "▼";
+  font-size: 10px;
+}
+
+.mm_multiselect_arrow.open {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* Improved input container layout */
+.mm_multiselect_input {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  position: relative;
+  flex: 1;
+  min-width: 50px;
+}
+
+.mm_multiselect_search {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: var(--spacing-1) 0;
+  font-size: var(--font-size-md);
+  background-color: transparent !important;
+  min-width: 80px;
+  width: 100%;
+}
+
+.mm_multiselect_search::placeholder {
   color: var(--color-neutral-50);
 }
-.float-label textarea::placeholder {
-  color: var(--color-neutral-50);
+
+/* Fixed dropdown positioning */
+.mm_multiselect_dropdown {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-neutral-60);
+  border-radius: var(--radius-base);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  max-height: 240px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none;
 }
 
-.float-label input:focus::placeholder {
-  color: transparent;
+.mm_multiselect_dropdown.open {
+  display: block;
+  animation: mm_dropdown_appear 0.2s ease;
 }
-.float-label textarea:focus::placeholder {
-  color: transparent;
+
+/* Added hover and active states for better feedback */
+.mm_multiselect_option {
+  padding: var(--spacing-2) var(--spacing-3);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: var(--color-neutral-100);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.mm_multiselect_option:hover {
+  background-color: var(--color-neutral-30);
+}
+
+.mm_multiselect_option:active {
+  background-color: var(--color-neutral-40);
+}
+
+.mm_multiselect_option--selected {
+  background-color: rgba(var(--_accent-color-rgb), 0.1);
+  color: var(--_accent-color);
+  font-weight: 500;
+}
+
+.mm_multiselect_option--selected::before {
+  content: "✓";
+  font-weight: bold;
+  margin-right: var(--spacing-1);
+}
+
+.mm_multiselect_option--selected:hover {
+  background-color: rgba(var(--_accent-color-rgb), 0.15);
+}
+
+/* Added empty state for better UX */
+.mm_multiselect_empty {
+  padding: var(--spacing-4) var(--spacing-3);
+  text-align: center;
+  color: var(--color-neutral-50);
+  font-size: var(--font-size-sm);
+}
+
+/* Improved tags container */
+.mm_multiselect_tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-1);
+  margin-bottom: var(--spacing-1);
+  align-items: center;
+  min-height: 24px;
+}
+
+.mm_multiselect_tags:empty {
+  margin-bottom: 0;
+  min-height: 0;
+}
+
+/* Better tag design with better remove button */
+.mm_multiselect_tag {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--_accent-color);
+  color: var(--color-white);
+  padding: 4px 8px 4px 12px;
+  border-radius: 16px;
+  font-size: 13px;
+  gap: 6px;
+  animation: mm_tag_appear 0.2s ease;
+  max-width: 180px;
+  line-height: 1;
+}
+
+.mm_multiselect_tag_text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mm_multiselect_tag_remove {
+  width: var(--spacing-4);
+  height: var(--spacing-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 12px;
+  line-height: 1;
+  transform: scale(1.1);
+  font-weight: bold;
+}
+
+.mm_multiselect_tag_remove:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.mm_multiselect_tag_remove:active {
+  transform: scale(0.95);
+}
+
+/* Variants support for multiselect */
+.mm_input--fill .mm_multiselect_container {
+  /* background-color: var(--color-neutral-30); */
+  outline: 1px solid var(--color-neutral-60);
+}
+
+.mm_input--fill .mm_multiselect_container:hover:not([disabled]) {
+  background-color: var(--color-neutral-40);
+  outline-color: var(--color-neutral-70);
+}
+
+.mm_input--outline .mm_multiselect_container {
+  background-color: transparent;
+  outline: 1px solid var(--color-neutral-40);
+}
+
+.mm_input--outline .mm_multiselect_container:hover:not([disabled]) {
+  outline-color: var(--color-neutral-60);
+  background-color: var(--color-neutral-20);
+}
+
+.mm_input--ghost .mm_multiselect_container {
+  background-color: transparent;
+  outline: none;
+  border-radius: 0;
+  padding-right: var(--spacing-8);
+}
+
+.mm_input--ghost .mm_multiselect_container:hover:not([disabled]) {
+  background-color: var(--color-neutral-20);
+}
+
+/* ====================================== */
+/* ✨ Animations */
+@keyframes mm_tag_appear {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes mm_dropdown_appear {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Added for single select arrow */
+.mm_select_arrow {
+  position: absolute;
+  right: var(--spacing-3);
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.2s ease;
+  font-size: 14px;
+  color: var(--color-neutral-60);
+  pointer-events: none;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mm_select_arrow::before {
+  content: "▼";
+  font-size: 10px;
+}
+
+/* ====================================== */
+/* 🎯 Focus visible for accessibility */
+.mm_multiselect_option:focus-visible,
+.mm_select:focus-visible {
+  outline: 2px solid var(--_accent-color);
+  outline-offset: 2px;
+}
+
+/* ====================================== */
+/* 📱 Responsive improvements */
+@media (max-width: 640px) {
+  .mm_multiselect_dropdown {
+    max-height: 180px;
+  }
+
+  .mm_multiselect_tag {
+    max-width: 150px;
+  }
+
+  .mm_multiselect_container {
+    min-height: 44px;
+    padding: var(--spacing-1-5) var(--spacing-2);
+  }
+
+  .mm_multiselect_search {
+    font-size: var(--font-size-sm);
+  }
+}
+
+/* ====================================== */
+/* 🎨 Smooth scrollbar for dropdown */
+.mm_multiselect_dropdown::-webkit-scrollbar {
+  width: 8px;
+}
+
+.mm_multiselect_dropdown::-webkit-scrollbar-track {
+  background: var(--color-neutral-20);
+  border-radius: 4px;
+}
+
+.mm_multiselect_dropdown::-webkit-scrollbar-thumb {
+  background: var(--color-neutral-50);
+  border-radius: 4px;
+}
+
+.mm_multiselect_dropdown::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neutral-60);
+}
+
+/* ====================================== */
+/* 🎨 Color variants for multiselect */
+.mm_input--primary .mm_multiselect_tag {
+  background-color: var(--color-primary);
+}
+
+.mm_input--secondary .mm_multiselect_tag {
+  background-color: var(--color-secondary);
+}
+
+.mm_input--success .mm_multiselect_tag {
+  background-color: var(--color-success);
+}
+
+.mm_input--warning .mm_multiselect_tag {
+  background-color: var(--color-warning);
+}
+
+.mm_input--error .mm_multiselect_tag {
+  background-color: var(--color-error);
 }
 
 /* Button variants and*/

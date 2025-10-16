@@ -199,6 +199,63 @@ $(document).ready(function () {
           })
         ),
       },
+      title: "File Uploader Component",
+    },
+    {
+      class: Select,
+      config: {
+        btp: btoa(
+          JSON.stringify({
+            label: "Country",
+            placeholder: "Select your country",
+            color: "primary",
+            radius: "radius-base",
+            disabled: false,
+            required: true,
+            options: [
+              { value: "", text: "Select your country" },
+              { value: "us", text: "United States" },
+              { value: "uk", text: "United Kingdom" },
+              { value: "ca", text: "Canada" },
+              { value: "au", text: "Australia" },
+              { value: "de", text: "Germany" },
+              { value: "fr", text: "France" },
+              { value: "jp", text: "Japan" },
+            ],
+            onChange: (value) => console.log("Selected country:", value),
+          })
+        ),
+      },
+      title: "Select Component",
+    },
+    {
+      class: Select,
+      config: {
+        btp: btoa(
+          JSON.stringify({
+            label: "Skills",
+            placeholder: "Select your skills",
+            variant: "outline",
+            color: "secondary",
+            radius: "radius-lg",
+            disabled: false,
+            multiple: true,
+            options: [
+              { value: "js", text: "JavaScript" },
+              { value: "react", text: "React" },
+              { value: "vue", text: "Vue.js" },
+              { value: "angular", text: "Angular" },
+              { value: "node", text: "Node.js" },
+              { value: "python", text: "Python" },
+              { value: "java", text: "Java" },
+              { value: "csharp", text: "C#" },
+            ],
+            selectedValues: ["js", "react"], // Pre-selected values
+            onChange: (values) => console.log("Selected skills:", values),
+          })
+        ),
+      },
+      title: "Multiple Select Component",
     },
     {
       class: Line,
