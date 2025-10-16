@@ -236,7 +236,7 @@ $(document).ready(function () {
             label: "Skills",
             placeholder: "Select your skills",
             variant: "outline",
-            color: "secondary",
+            color: "primary",
             radius: "radius-lg",
             disabled: false,
             multiple: true,
