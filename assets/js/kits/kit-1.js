@@ -1,13 +1,13 @@
 class Password extends Input {
   cT() {
     const cfg = this.btp || {};
-    const variant = "outline"; // force single visual style
+    const variant = cfg.variant || "fill";
     const color = cfg.color || "primary";
     const radius = cfg.radius || "radius-base";
     const labelText = cfg.label || "Password";
     const placeholderText = cfg.placeholder || "Enter your password";
 
-    const isDisabled = cfg.variant === "disable" || cfg.disabled;
+    const isDisabled = variant === "disable" || cfg.disabled;
 
     this.target = $(`
       <div class="float-label mm_input mm_input--${variant} mm_input--${color} mm_input--${radius}">
@@ -724,7 +724,9 @@ class Select extends Input {
         <div class="mm_multiselect_container" ${isDisabled ? "disabled" : ""}>
           ${tagsArea}
           <div class="mm_multiselect_input">
-            <input type="text" class="mm_multiselect_search" placeholder="${placeholderText}" ${isDisabled ? "disabled" : ""} />
+            <input type="text" class="mm_multiselect_search" placeholder="${placeholderText}" ${
+      isDisabled ? "disabled" : ""
+    } />
             <div class="mm_multiselect_arrow"></div>
           </div>
           <div class="mm_multiselect_dropdown">
@@ -813,7 +815,9 @@ class Select extends Input {
         </div>
       `);
       tagsContainer.append(tag);
-      dropdown.find(`[data-value="${value}"]`).addClass("mm_multiselect_option--selected");
+      dropdown
+        .find(`[data-value="${value}"]`)
+        .addClass("mm_multiselect_option--selected");
 
       tag.find(".mm_multiselect_tag_remove").on("click", (e) => {
         e.stopPropagation();
@@ -826,13 +830,17 @@ class Select extends Input {
     const removeTag = (value) => {
       this.selectedValues = this.selectedValues.filter((v) => v !== value);
       tagsContainer.find(`[data-value="${value}"]`).remove();
-      dropdown.find(`[data-value="${value}"]`).removeClass("mm_multiselect_option--selected");
+      dropdown
+        .find(`[data-value="${value}"]`)
+        .removeClass("mm_multiselect_option--selected");
       updateHasValue();
       if (cfg.onChange) cfg.onChange(this.selectedValues);
     };
 
     const updateHasValue = () => {
-      const hasVal = isMulti ? this.selectedValues.length > 0 : !!this.selectedValue;
+      const hasVal = isMulti
+        ? this.selectedValues.length > 0
+        : !!this.selectedValue;
       root.toggleClass("has-value", hasVal);
     };
 
@@ -863,28 +871,33 @@ class Select extends Input {
       const opt = $(e.currentTarget);
       const value = opt.data("value");
       const text = opt.text();
-    
+
       if (isMulti) {
         // حالت چند انتخابی
-        this.selectedValues.includes(value) ? removeTag(value) : addTag(value, text);
+        this.selectedValues.includes(value)
+          ? removeTag(value)
+          : addTag(value, text);
         searchInput.focus();
       } else {
         // حالت تک انتخابی
         this.selectedValue = value;
-        dropdown.find(".mm_multiselect_option").removeClass("mm_multiselect_option--selected");
+        dropdown
+          .find(".mm_multiselect_option")
+          .removeClass("mm_multiselect_option--selected");
         opt.addClass("mm_multiselect_option--selected");
         searchInput.val(value ? text : "");
         updateHasValue();
-    
+
         if (cfg.onChange) cfg.onChange(this.selectedValue);
-    
+
         // 🔻 این خط اضافه شد تا بلافاصله dropdown بسته شود
         closeDropdown();
       }
     });
 
     $(document).on("click", (e) => {
-      if (!container.is(e.target) && container.has(e.target).length === 0) closeDropdown();
+      if (!container.is(e.target) && container.has(e.target).length === 0)
+        closeDropdown();
     });
 
     $(window).on("resize scroll", () => {
@@ -902,7 +915,9 @@ class Select extends Input {
       if (initial) {
         this.selectedValue = initial.value;
         searchInput.val(initial.text);
-        dropdown.find(`[data-value="${initial.value}"]`).addClass("mm_multiselect_option--selected");
+        dropdown
+          .find(`[data-value="${initial.value}"]`)
+          .addClass("mm_multiselect_option--selected");
       } else this.selectedValue = "";
       updateHasValue();
     }
@@ -910,7 +925,9 @@ class Select extends Input {
 
   // --- VALUE GETTER ---
   gV() {
-    return this.mode === "multi" ? this.selectedValues : this.selectedValue || "";
+    return this.mode === "multi"
+      ? this.selectedValues
+      : this.selectedValue || "";
   }
 
   // --- VALUE SETTER ---
@@ -919,7 +936,9 @@ class Select extends Input {
       const tagsContainer = this.target.find(".mm_multiselect_tags");
       const dropdown = this.target.find(".mm_multiselect_dropdown");
       tagsContainer.empty();
-      dropdown.find(".mm_multiselect_option").removeClass("mm_multiselect_option--selected");
+      dropdown
+        .find(".mm_multiselect_option")
+        .removeClass("mm_multiselect_option--selected");
 
       this.selectedValues = Array.isArray(value) ? value : [];
       this.selectedValues.forEach((v) => {
@@ -932,7 +951,9 @@ class Select extends Input {
             </div>
           `);
           tagsContainer.append(tag);
-          dropdown.find(`[data-value="${v}"]`).addClass("mm_multiselect_option--selected");
+          dropdown
+            .find(`[data-value="${v}"]`)
+            .addClass("mm_multiselect_option--selected");
         }
       });
       this.target.toggleClass("has-value", this.selectedValues.length > 0);
@@ -940,12 +961,16 @@ class Select extends Input {
       const searchInput = this.target.find(".mm_multiselect_search");
       const dropdown = this.target.find(".mm_multiselect_dropdown");
       this.selectedValue = value || "";
-      dropdown.find(".mm_multiselect_option").removeClass("mm_multiselect_option--selected");
+      dropdown
+        .find(".mm_multiselect_option")
+        .removeClass("mm_multiselect_option--selected");
       if (this.selectedValue) {
         const opt = this.options.find((o) => o.value === this.selectedValue);
         if (opt) {
           searchInput.val(opt.text);
-          dropdown.find(`[data-value="${opt.value}"]`).addClass("mm_multiselect_option--selected");
+          dropdown
+            .find(`[data-value="${opt.value}"]`)
+            .addClass("mm_multiselect_option--selected");
         }
       } else searchInput.val("");
       this.target.toggleClass("has-value", !!this.selectedValue);
@@ -956,4 +981,3 @@ class Select extends Input {
     return { status: this.lv != this.gV() };
   }
 }
-
