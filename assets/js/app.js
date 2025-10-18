@@ -192,6 +192,7 @@ $(document).ready(function () {
       config: {
         btp: btoa(
           JSON.stringify({
+            color: "primary",
             label: "upload file",
             accept: "image/png,image/jpeg",
             multiple: true,
@@ -250,7 +251,7 @@ $(document).ready(function () {
               { value: "java", text: "Java" },
               { value: "csharp", text: "C#" },
             ],
-            selectedValues: ["js", "react"], // Pre-selected values
+            // selectedValues: ["js", "react"], // Pre-selected values
             onChange: (values) => console.log("Selected skills:", values),
           })
         ),

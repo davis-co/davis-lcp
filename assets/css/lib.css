@@ -170,40 +170,39 @@
   --color-black: #090909;
   --color-gray-light: rgba(0, 0, 0, 0.05);
 
- /* Border Radius Configuration */
-  --radius-1: 0.25rem;    /* 4px */
-  --radius-2: 0.375rem;   /* 6px */
-  --radius-base: 0.5rem;  /* 8px */
-  --radius-3: 0.625rem;   /* 10px */
-  --radius-4: 0.75rem;    /* 12px */
-  --radius-5: 1rem;       /* 16px */
-  --radius-6: 1.25rem;    /* 20px */
-  --radius-7: 1.5rem;     /* 24px */
-  --radius-8: 2rem;       /* 32px */
+  /* Border Radius Configuration */
+  --radius-1: 0.25rem; /* 4px */
+  --radius-2: 0.375rem; /* 6px */
+  --radius-base: 0.5rem; /* 8px */
+  --radius-3: 0.625rem; /* 10px */
+  --radius-4: 0.75rem; /* 12px */
+  --radius-5: 1rem; /* 16px */
+  --radius-6: 1.25rem; /* 20px */
+  --radius-7: 1.5rem; /* 24px */
+  --radius-8: 2rem; /* 32px */
 
   /* Spacing Configuration */
   --spacing-00: 0.125rem; /* 2px */
-  --spacing-1: 0.25rem;   /* 4px */
-  --spacing-2: 0.5rem;    /* 8px */
-  --spacing-3: 0.75rem;   /* 12px */
-  --spacing-4: 1rem;      /* 16px */
-  --spacing-5: 1.5rem;    /* 24px */
-  --spacing-6: 2rem;      /* 32px */
-  --spacing-7: 2.5rem;    /* 40px */
-  --spacing-8: 3rem;      /* 48px */
-  --spacing-9: 3.5rem;    /* 56px */
-  --spacing-10: 4rem;     /* 64px */
-  --spacing-11: 4.5rem;   /* 72px */
-  --spacing-12: 5rem;     /* 80px */
+  --spacing-1: 0.25rem; /* 4px */
+  --spacing-2: 0.5rem; /* 8px */
+  --spacing-3: 0.75rem; /* 12px */
+  --spacing-4: 1rem; /* 16px */
+  --spacing-5: 1.5rem; /* 24px */
+  --spacing-6: 2rem; /* 32px */
+  --spacing-7: 2.5rem; /* 40px */
+  --spacing-8: 3rem; /* 48px */
+  --spacing-9: 3.5rem; /* 56px */
+  --spacing-10: 4rem; /* 64px */
+  --spacing-11: 4.5rem; /* 72px */
+  --spacing-12: 5rem; /* 80px */
 
   /* Font Size Configuration */
-  --font-size-xs: 0.625rem;  /* 10px */
-  --font-size-sm: 0.75rem;   /* 12px */
-  --font-size-md: 0.875rem;  /* 14px */
-  --font-size-lg: 1rem;      /* 16px */
-  --font-size-xl: 1.125rem;  /* 18px */
+  --font-size-xs: 0.625rem; /* 10px */
+  --font-size-sm: 0.75rem; /* 12px */
+  --font-size-md: 0.875rem; /* 14px */
+  --font-size-lg: 1rem; /* 16px */
+  --font-size-xl: 1.125rem; /* 18px */
 }
-
 
 /* ===== FONTS (project-local) ===== */
 @font-face {
@@ -332,40 +331,137 @@ input:not(.mm_button) {
   position: relative;
   display: inline-block;
   width: 100%;
+  margin-bottom: var(--spacing-4);
 }
 
 .float-label input {
   width: 100%;
-  padding: var(--spacing-2) var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-3);
   font-size: var(--font-size-md);
   border-radius: var(--radius-base);
   outline: none;
   transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
 /* Textarea base to match inputs */
 .float-label textarea {
   width: 100%;
-  padding: var(--spacing-2) var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-3);
   font-size: var(--font-size-md);
   border-radius: var(--radius-base);
   outline: none;
   transition: all 0.2s ease;
   resize: vertical;
+  min-height: 100px;
+  box-sizing: border-box;
 }
 
 .float-label label {
   position: absolute;
-  right: var(--spacing-2);
+  right: var(--spacing-3);
   opacity: 0;
   top: 50%;
   transform: translateY(-50%);
   color: var(--color-neutral-60);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-md);
   pointer-events: none;
   background-color: transparent;
   transition: all 0.2s ease;
   padding: 0 var(--spacing-1);
+  line-height: 1.4;
+}
+
+/* 📱 Breakpoint برای تبلت (768px به پایین) */
+@media (max-width: 768px) {
+  .float-label {
+    margin-bottom: var(--spacing-3);
+  }
+
+  .float-label input {
+    padding: var(--spacing-2-5) var(--spacing-2-5);
+    font-size: var(--font-size-sm);
+    min-height: 44px; /* برای لمسی بودن */
+  }
+
+  .float-label textarea {
+    padding: var(--spacing-2-5) var(--spacing-2-5);
+    font-size: var(--font-size-sm);
+    min-height: 90px;
+  }
+
+  .float-label label {
+    right: var(--spacing-2-5);
+    font-size: var(--font-size-sm);
+    padding: 0 var(--spacing-1);
+  }
+}
+
+/* 📱 Breakpoint برای موبایل کوچک (480px به پایین) */
+@media (max-width: 480px) {
+  .float-label {
+    margin-bottom: var(--spacing-2);
+  }
+
+  .float-label input {
+    padding: var(--spacing-2) var(--spacing-2);
+    font-size: var(--font-size-sm);
+    min-height: 42px;
+    border-radius: var(--radius-2);
+  }
+
+  .float-label textarea {
+    padding: var(--spacing-2) var(--spacing-2);
+    font-size: var(--font-size-sm);
+    min-height: 80px;
+    border-radius: var(--radius-2);
+  }
+
+  .float-label label {
+    right: var(--spacing-2);
+    font-size: var(--font-size-xs);
+    padding: 0 var(--spacing-0-5);
+  }
+}
+
+/* 🖥️ Breakpoint برای دسکتاپ بزرگ (1024px به بالا) */
+@media (min-width: 1024px) {
+  .float-label input {
+    padding: var(--spacing-3) var(--spacing-4);
+    font-size: var(--font-size-md);
+    min-height: 48px;
+  }
+
+  .float-label textarea {
+    padding: var(--spacing-3) var(--spacing-4);
+    font-size: var(--font-size-md);
+    min-height: 120px;
+  }
+
+  .float-label label {
+    right: var(--spacing-4);
+    font-size: var(--font-size-md);
+  }
+}
+
+/* 🖥️ Breakpoint برای دسکتاپ خیلی بزرگ (1440px به بالا) */
+@media (min-width: 1440px) {
+  .float-label input {
+    padding: var(--spacing-4) var(--spacing-5);
+    font-size: var(--font-size-lg);
+    min-height: 52px;
+  }
+
+  .float-label textarea {
+    padding: var(--spacing-4) var(--spacing-5);
+    font-size: var(--font-size-lg);
+    min-height: 140px;
+  }
+
+  .float-label label {
+    right: var(--spacing-5);
+    font-size: var(--font-size-lg);
+  }
 }
 
 /* ====================================== */
@@ -374,61 +470,105 @@ input:not(.mm_button) {
 /* 🎯 Float Label System - Unified */
 .float-label.has-value label,
 .float-label input:focus + label,
+.float-label textarea:focus + label,
 .float-label select:focus + label,
+.float-label input:not(:placeholder-shown) + label,
+.float-label datepicker:not(:placeholder-shown) + label,
+.float-label textarea:not(:placeholder-shown) + label,
 .float-label .mm_multiselect_container:focus-within + label {
-  top: 7px;
-  padding: 0 var(--spacing-2);
-  border-radius: var(--radius-base);
-  transform: translateY(-100%) scale(0.9);
+  top: 0;
+  transform: translateY(-50%) scale(0.9);
   opacity: 1;
   background-color: var(--color-white);
-  color: var(--_accent-color, var(--color-primary))
+  color: var(--_accent-color, var(--color-primary));
+  padding: 0 var(--spacing-2);
+  border-radius: var(--radius-base);
 }
 
-/* ====================================== */
-/* 🎨 Variant System */
+/* 📱 تنظیمات ریسپانسیو برای labelهای شناور */
+@media (max-width: 768px) {
+  .float-label.has-value label,
+  .float-label input:focus + label,
+  .float-label textarea:focus + label,
+  .float-label input:not(:placeholder-shown) + label,
+  .float-label datepicker:not(:placeholder-shown) + label,
+  .float-label textarea:not(:placeholder-shown) + label {
+    transform: translateY(-50%) scale(0.85);
+    padding: 0 var(--spacing-1-5);
+    font-size: var(--font-size-xs);
+  }
+}
 
+@media (max-width: 480px) {
+  .float-label.has-value label,
+  .float-label input:focus + label,
+  .float-label textarea:focus + label,
+  .float-label input:not(:placeholder-shown) + label,
+  .float-label datepicker:not(:placeholder-shown) + label,
+  .float-label textarea:not(:placeholder-shown) + label {
+    transform: translateY(-50%) scale(0.8);
+    padding: 0 var(--spacing-1);
+    font-size: var(--font-size-xs);
+    top: -1px;
+  }
+}
+
+/* برای textarea موقعیت اولیه label */
+.float-label textarea + label {
+  top: var(--spacing-3);
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .float-label textarea + label {
+    top: var(--spacing-2-5);
+  }
+}
+
+@media (max-width: 480px) {
+  .float-label textarea + label {
+    top: var(--spacing-2);
+  }
+}
+
+/* حالت‌های مختلف واریانت - ریسپانسیو */
 .mm_input--fill input,
 .mm_input--fill textarea {
   background-color: var(--color-neutral-30);
   border: 1px solid var(--color-neutral-60);
 }
-.mm_input--fill input:focus,
-.mm_input--fill textarea:focus {
-  border-color: var(--_accent-color);
-  color: var(--_accent-color);
-}
 
-/* outline */
 .mm_input--outline input,
 .mm_input--outline textarea {
   background-color: transparent;
   border: 1px solid var(--color-neutral-40);
 }
-.mm_input--outline input:focus,
-.mm_input--outline textarea:focus {
-  border-color: var(--_accent-color);
-}
 
-/* ghost */
 .mm_input--ghost input,
 .mm_input--ghost textarea {
   background-color: transparent;
   border: none;
   border-bottom: 1px solid var(--color-neutral-40);
   border-radius: 0;
-}
-.mm_input--ghost input:focus,
-.mm_input--ghost textarea:focus {
-  border-bottom-color: var(--_accent-color);
+  padding-left: 0;
+  padding-right: 0;
 }
 
-/* disable */
-.mm_input--disable input,
-.mm_input--disable textarea {
-  background-color: var(--color-neutral-20);
-  color: var(--color-neutral-60);
-  cursor: not-allowed;
+/* 📱 بهینه‌سازی برای لمسی بودن روی موبایل */
+@media (max-width: 768px) {
+  .float-label input,
+  .float-label textarea {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  /* افزایش فاصله برای لمسی بودن */
+  .mm_input--fill input,
+  .mm_input--fill textarea,
+  .mm_input--outline input,
+  .mm_input--outline textarea {
+    min-height: 44px;
+  }
 }
 
 /* ====================================== */
@@ -510,7 +650,7 @@ input:not(.mm_button) {
 /* 🔽 Select Component */
 .mm_select {
   width: 100%;
-  padding: var(--spacing-2) var(--spacing-4) var(--spacing-2) var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-6) var(--spacing-3) var(--spacing-3);
   font-size: var(--font-size-md);
   border-radius: var(--radius-base);
   outline: 1px solid var(--_accent-color);
@@ -519,6 +659,12 @@ input:not(.mm_button) {
   transition: all 0.2s ease;
   cursor: pointer;
   appearance: none;
+  box-sizing: border-box;
+  min-height: 48px;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right var(--spacing-2) center;
+  background-repeat: no-repeat;
+  background-size: 16px;
 }
 
 .mm_select:hover:not(:disabled) {
@@ -533,6 +679,7 @@ input:not(.mm_button) {
 /* Select variants reuse input system */
 .mm_input--fill .mm_select {
   outline: 1px solid var(--color-neutral-60);
+  background-color: var(--color-neutral-30);
 }
 .mm_input--fill .mm_select:hover:not(:disabled) {
   outline-color: var(--color-neutral-70);
@@ -549,12 +696,13 @@ input:not(.mm_button) {
 .mm_input--ghost .mm_select {
   background-color: transparent;
   outline: none;
-  outline-bottom: 1px solid var(--color-neutral-40);
+  border-bottom: 1px solid var(--color-neutral-40);
   border-radius: 0;
   padding-right: var(--spacing-8);
+  background-position: right 0 center;
 }
 .mm_input--ghost .mm_select:hover:not(:disabled) {
-  outline-bottom-color: var(--color-neutral-60);
+  border-bottom-color: var(--color-neutral-60);
 }
 
 /* Disable state */
@@ -563,13 +711,14 @@ input:not(.mm_button) {
   color: var(--color-neutral-50);
   cursor: not-allowed;
   opacity: 0.6;
+  background-color: var(--color-neutral-20);
 }
 
 /* Multiple select */
 .mm_select[multiple] {
   background-image: none;
   min-height: 100px;
-  padding-right: 16px;
+  padding-right: var(--spacing-3);
 }
 
 /* ====================================== */
@@ -578,9 +727,8 @@ input:not(.mm_button) {
 .mm_singleselect {
   position: relative;
   width: 100%;
-  font-size: 0.95rem;
+  font-size: var(--font-size-md);
 }
-
 
 .mm_multiselect_container {
   width: 100%;
@@ -595,6 +743,7 @@ input:not(.mm_button) {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  box-sizing: border-box;
 }
 
 .mm_multiselect_container:hover:not([disabled]) {
@@ -668,7 +817,6 @@ input:not(.mm_button) {
   width: 100%;
 }
 
-
 .mm_multiselect_search::placeholder {
   color: var(--color-neutral-50);
 }
@@ -678,8 +826,8 @@ input:not(.mm_button) {
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(100% + 4px); 
-  bottom: auto; 
+  top: calc(100% + 4px);
+  bottom: auto;
   max-height: 240px;
   background-color: var(--color-white);
   border: 1px solid var(--color-neutral-60);
@@ -800,34 +948,234 @@ input:not(.mm_button) {
 
 /* Variants support for multiselect */
 .mm_input--fill .mm_multiselect_container {
-  /* background-color: var(--color-neutral-30); */
-  outline: 1px solid var(--color-neutral-60);
+  background-color: var(--color-neutral-30);
+  border: 1px solid var(--color-neutral-60);
 }
 
 .mm_input--fill .mm_multiselect_container:hover:not([disabled]) {
   background-color: var(--color-neutral-40);
-  outline-color: var(--color-neutral-70);
+  border-color: var(--color-neutral-70);
 }
 
 .mm_input--outline .mm_multiselect_container {
   background-color: transparent;
-  outline: 1px solid var(--color-neutral-40);
+  border: 1px solid var(--color-neutral-40);
 }
 
 .mm_input--outline .mm_multiselect_container:hover:not([disabled]) {
-  outline-color: var(--color-neutral-60);
+  border-color: var(--color-neutral-60);
   background-color: var(--color-neutral-20);
 }
 
 .mm_input--ghost .mm_multiselect_container {
   background-color: transparent;
-  outline: none;
+  border: none;
+  border-bottom: 1px solid var(--color-neutral-40);
   border-radius: 0;
   padding-right: var(--spacing-8);
 }
 
 .mm_input--ghost .mm_multiselect_container:hover:not([disabled]) {
   background-color: var(--color-neutral-20);
+}
+
+/* ====================================== */
+/* 📱 RESPONSIVE BREAKPOINTS */
+
+/* 📱 تبلت (768px به پایین) */
+@media (max-width: 768px) {
+  .mm_select {
+    padding: var(--spacing-2-5) var(--spacing-5) var(--spacing-2-5)
+      var(--spacing-2-5);
+    font-size: var(--font-size-sm);
+    min-height: 44px;
+    background-size: 14px;
+    background-position: right var(--spacing-1-5) center;
+  }
+
+  .mm_select[multiple] {
+    min-height: 90px;
+    padding-right: var(--spacing-2-5);
+  }
+
+  .mm_multiselect_container {
+    padding: var(--spacing-1-5) var(--spacing-2-5);
+    min-height: 44px;
+    font-size: var(--font-size-sm);
+  }
+
+  .mm_multiselect_arrow {
+    right: var(--spacing-2-5);
+    width: 18px;
+    height: 18px;
+  }
+
+  .mm_multiselect_search {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-0-5) 0;
+  }
+
+  .mm_multiselect_dropdown {
+    max-height: 200px;
+  }
+
+  .mm_multiselect_option {
+    padding: var(--spacing-1-5) var(--spacing-2-5);
+    font-size: var(--font-size-sm);
+  }
+
+  .mm_multiselect_tag {
+    font-size: 12px;
+    padding: 3px 6px 3px 10px;
+    max-width: 150px;
+  }
+
+  .mm_multiselect_empty {
+    padding: var(--spacing-3) var(--spacing-2-5);
+    font-size: var(--font-size-xs);
+  }
+}
+
+/* 📱 موبایل کوچک (480px به پایین) */
+@media (max-width: 480px) {
+  .mm_select {
+    padding: var(--spacing-2) var(--spacing-4) var(--spacing-2) var(--spacing-2);
+    font-size: var(--font-size-sm);
+    min-height: 42px;
+    background-size: 12px;
+    background-position: right var(--spacing-1) center;
+    border-radius: var(--radius-2);
+  }
+
+  .mm_select[multiple] {
+    min-height: 80px;
+    padding-right: var(--spacing-2);
+  }
+
+  .mm_multiselect_container {
+    padding: var(--spacing-1-5) var(--spacing-2);
+    min-height: 42px;
+    font-size: var(--font-size-sm);
+    border-radius: var(--radius-2);
+  }
+
+  .mm_multiselect_arrow {
+    right: var(--spacing-2);
+    width: 16px;
+    height: 16px;
+  }
+
+  .mm_multiselect_arrow::before {
+    font-size: 8px;
+  }
+
+  .mm_multiselect_search {
+    font-size: var(--font-size-sm);
+    min-width: 60px;
+  }
+
+  .mm_multiselect_dropdown {
+    max-height: 180px;
+    border-radius: var(--radius-2);
+  }
+
+  .mm_multiselect_option {
+    padding: var(--spacing-1-5) var(--spacing-2);
+    font-size: var(--font-size-sm);
+    gap: var(--spacing-1);
+  }
+
+  .mm_multiselect_tags {
+    gap: var(--spacing-0-5);
+  }
+
+  .mm_multiselect_tag {
+    font-size: 11px;
+    padding: 2px 5px 2px 8px;
+    max-width: 120px;
+  }
+
+  .mm_multiselect_tag_remove {
+    width: var(--spacing-3);
+    height: var(--spacing-3);
+    font-size: 10px;
+  }
+}
+
+/* 🖥️ دسکتاپ (1024px به بالا) */
+@media (min-width: 1024px) {
+  .mm_select {
+    padding: var(--spacing-3) var(--spacing-6) var(--spacing-3) var(--spacing-3);
+    font-size: var(--font-size-md);
+    min-height: 48px;
+  }
+
+  .mm_select[multiple] {
+    min-height: 120px;
+  }
+
+  .mm_multiselect_container {
+    padding: var(--spacing-2) var(--spacing-3);
+    min-height: 48px;
+  }
+
+  .mm_multiselect_dropdown {
+    max-height: 260px;
+  }
+}
+
+/* 🖥️ دسکتاپ بزرگ (1440px به بالا) */
+@media (min-width: 1440px) {
+  .mm_select {
+    padding: var(--spacing-4) var(--spacing-7) var(--spacing-4) var(--spacing-4);
+    font-size: var(--font-size-lg);
+    min-height: 52px;
+  }
+
+  .mm_multiselect_container {
+    padding: var(--spacing-3) var(--spacing-4);
+    min-height: 52px;
+    font-size: var(--font-size-lg);
+  }
+
+  .mm_multiselect_search {
+    font-size: var(--font-size-lg);
+  }
+
+  .mm_multiselect_option {
+    font-size: var(--font-size-md);
+  }
+}
+
+/* بهینه‌سازی برای لمسی بودن */
+@media (max-width: 768px) {
+  .mm_select,
+  .mm_multiselect_container {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .mm_multiselect_option {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+/* اسکرول بار بهینه شده برای موبایل */
+.mm_multiselect_dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.mm_multiselect_dropdown::-webkit-scrollbar-thumb {
+  background: var(--color-neutral-40);
+  border-radius: 3px;
+}
+
+@media (max-width: 480px) {
+  .mm_multiselect_dropdown::-webkit-scrollbar {
+    width: 4px;
+  }
 }
 
 /* ====================================== */
@@ -968,32 +1316,154 @@ input:not(.mm_button) {
 }
 
 /* icon helpers for input-based buttons */
+.mm_button {
+  display: inline-flex;
+  width: 100%;
+  max-width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  border-radius: var(--radius-base);
+  border: none;
+  font-weight: 600;
+  padding: var(--spacing-3) var(--spacing-4);
+  line-height: 1.2;
+  transition: background-color 0.15s ease, color 0.15s ease,
+    border-color 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease;
+  background-repeat: no-repeat;
+  background-origin: padding-box;
+  background-size: var(--spacing-4) var(--spacing-4),
+    var(--spacing-4) var(--spacing-4);
+  text-align: center;
+  word-wrap: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+}
+
+/* 📱 Breakpoint برای موبایل */
+@media (max-width: 768px) {
+  .mm_button {
+    padding: var(--spacing-3) var(--spacing-3);
+    font-size: var(--font-size-sm);
+    gap: var(--spacing-1-5);
+    min-height: 44px; /* حداقل ارتفاع برای لمسی */
+  }
+}
+
+/* 📱 Breakpoint برای موبایل کوچک */
+@media (max-width: 480px) {
+  .mm_button {
+    padding: var(--spacing-2-5) var(--spacing-2);
+    font-size: var(--font-size-xs);
+    gap: var(--spacing-1);
+    min-height: 40px;
+    line-height: 1.3;
+  }
+}
+
+/* 🖥️ Breakpoint برای دسکتاپ */
+@media (min-width: 1024px) {
+  .m_button {
+    padding: var(--spacing-4) var(--spacing-8);
+    font-size: var(--font-size-md);
+  }
+}
+
+/* 🖥️ Breakpoint برای دسکتاپ بزرگ */
+@media (min-width: 1440px) {
+  .mm_button {
+    padding: var(--spacing-4) var(--spacing-10);
+    font-size: var(--font-size-lg);
+  }
+}
+
+/* برای دکمه‌های با آیکون */
 .mm_button--has-before {
   padding-left: var(--spacing-8);
-  background-image: var(--icon-before, none) !important;
   background-position: left var(--spacing-2) center !important;
-  background-repeat: no-repeat !important;
-  background-size: var(--spacing-4) var(--spacing-4) !important;
 }
 
 .mm_button--has-after {
   padding-right: var(--spacing-8);
-  background-image: var(--icon-after, none) !important;
   background-position: right var(--spacing-2) center !important;
-  background-repeat: no-repeat !important;
-  background-size: var(--spacing-4) var(--spacing-4) !important;
 }
 
 .mm_button--has-before.mm_button--has-after {
   padding-left: var(--spacing-8);
   padding-right: var(--spacing-8);
-  background-image: var(--icon-before, none), var(--icon-after, none) !important;
-  background-position: left var(--spacing-2) center,
-    right var(--spacing-2) center !important;
-  background-repeat: no-repeat, no-repeat !important;
-  background-size: var(--spacing-4) var(--spacing-4),
-    var(--spacing-4) var(--spacing-4) !important;
 }
+
+/* 📱 ریسپانسیو برای دکمه‌های با آیکون */
+@media (max-width: 768px) {
+  .mm_button--has-before {
+    padding-left: var(--spacing-6);
+    background-position: left var(--spacing-1-5) center !important;
+    background-size: var(--spacing-3) var(--spacing-3) !important;
+  }
+
+  .mm_button--has-after {
+    padding-right: var(--spacing-6);
+    background-position: right var(--spacing-1-5) center !important;
+    background-size: var(--spacing-3) var(--spacing-3) !important;
+  }
+
+  .mm_button--has-before.mm_button--has-after {
+    padding-left: var(--spacing-6);
+    padding-right: var(--spacing-6);
+    background-size: var(--spacing-3) var(--spacing-3),
+      var(--spacing-3) var(--spacing-3) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .mm_button--has-before {
+    padding-left: var(--spacing-5);
+    background-position: left var(--spacing-1) center !important;
+    background-size: var(--spacing-2-5) var(--spacing-2-5) !important;
+  }
+
+  .mm_button--has-after {
+    padding-right: var(--spacing-5);
+    background-position: right var(--spacing-1) center !important;
+    background-size: var(--spacing-2-5) var(--spacing-2-5) !important;
+  }
+
+  .mm_button--has-before.mm_button--has-after {
+    padding-left: var(--spacing-5);
+    padding-right: var(--spacing-5);
+    background-size: var(--spacing-2-5) var(--spacing-2-5),
+      var(--spacing-2-5) var(--spacing-2-5) !important;
+  }
+}
+
+/* برای دکمه‌های با متن طولانی */
+.mm_button--wrap {
+  white-space: normal;
+  line-height: 1.4;
+  padding: var(--spacing-3) var(--spacing-3);
+}
+
+/* سایزهای مختلف دکمه */
+.mm_button--sm {
+  padding: var(--spacing-2) var(--spacing-3);
+  font-size: var(--font-size-sm);
+  min-height: 36px;
+}
+
+.mm_button--lg {
+  padding: var(--spacing-4) var(--spacing-8);
+  font-size: var(--font-size-lg);
+  min-height: 52px;
+}
+
+.mm_button--xl {
+  padding: var(--spacing-5) var(--spacing-10);
+  font-size: var(--font-size-xl);
+  min-height: 60px;
+}
+
 .mm_button_icon img {
   width: 1em;
   height: 1em;
@@ -2106,7 +2576,8 @@ input:not(.mm_button) {
   font-family: Helvetica, Arial, sans-serif;
   font-size: 13px;
   height: 100%;
-  margin: 0px;
+  margin-top: var(--spacing-4);
+  border: hidden !important;
   position: relative;
   background-color: var(--color-neutral-20);
 }
@@ -2139,6 +2610,8 @@ input:not(.mm_button) {
   text-align: left;
   white-space: pre-wrap;
   word-wrap: break-word;
+  border: 1px solid var(--color-neutral-60);
+  border-radius: var(--radius-base);
 }
 .ql-editor > * {
   cursor: text;
@@ -2492,6 +2965,10 @@ input:not(.mm_button) {
   pointer-events: none;
   position: absolute;
   right: 15px;
+}
+
+.ql-snow.ql-toolbar {
+  border-radius: var(--radius-base);
 }
 
 .ql-snow.ql-toolbar:after,
@@ -3453,25 +3930,47 @@ input:not(.mm_button) {
 }
 
 /* file uploader */
+.filepond--file {
+  background-color: var(--_accent-color);
+  opacity: 0.6;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity;
+}
+
+.filepond--file:hover {
+  opacity: 1;
+  transition-duration: 0.2s;
+}
 
 .fj_fileuploader {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-2);
   justify-content: space-between;
+  width: 100%;
 }
 
 .fj_fileuploader .fj_label {
   color: var(--_accent-color);
   padding: var(--spacing-2);
+  font-size: var(--font-size-md);
+  font-weight: 500;
 }
 
 .fj_uploadbtn {
   background: var(--color-primary);
   color: var(--color-neutral-10);
-  padding: 0.5rem 1rem;
+  padding: var(--spacing-2) var(--spacing-4);
   border-radius: var(--radius-base);
   transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .fj_uploadbtn:hover {
@@ -3479,8 +3978,9 @@ input:not(.mm_button) {
 }
 
 .fj_filelist {
-  margin-top: 0.5rem;
-  color: #555;
+  margin-top: var(--spacing-2);
+  color: var(--color-neutral-70);
+  font-size: var(--font-size-sm);
 }
 
 /* ===== FILE UPLOADER (FilePond) VARIANTS ===== */
@@ -3489,41 +3989,52 @@ input:not(.mm_button) {
   border: 1px solid var(--_accent-color);
   border-radius: var(--radius-base);
 }
+
 .fj_fileuploader.mm_input--outline .filepond--panel-root {
   background-color: transparent;
   border: 1px solid var(--color-neutral-40);
   border-radius: var(--radius-base);
 }
+
 .fj_fileuploader.mm_input--ghost .filepond--panel-root {
   background-color: transparent;
   border: 1px solid transparent;
   border-bottom: 1px solid var(--color-neutral-40);
   border-radius: 0;
 }
+
 .fj_fileuploader.mm_input--disable .filepond--panel-root {
   background-color: var(--color-neutral-20);
   color: var(--color-neutral-60);
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* رنگ‌ها */
 .fj_fileuploader.mm_input--primary .filepond--drop-label {
   color: var(--color-primary);
 }
+
 .fj_fileuploader.mm_input--secondary .filepond--drop-label {
   color: var(--color-secondary);
 }
+
 .fj_fileuploader.mm_input--danger .filepond--drop-label {
   color: var(--color-danger);
 }
+
 .fj_fileuploader.mm_input--warning .filepond--drop-label {
   color: var(--color-warning);
 }
+
 .fj_fileuploader.mm_input--success .filepond--drop-label {
   color: var(--color-success);
 }
+
 .fj_fileuploader.mm_input--info .filepond--drop-label {
   color: var(--color-info);
 }
+
 .fj_fileuploader.mm_input--neutral .filepond--drop-label {
   color: var(--color-neutral-80);
 }
@@ -3532,12 +4043,15 @@ input:not(.mm_button) {
 .fj_fileuploader.mm_input--radius-base .filepond--panel-root {
   border-radius: var(--radius-base);
 }
+
 .fj_fileuploader.mm_input--radius-1 .filepond--panel-root {
   border-radius: var(--radius-1);
 }
+
 .fj_fileuploader.mm_input--radius-4 .filepond--panel-root {
   border-radius: var(--radius-4);
 }
+
 .fj_fileuploader.mm_input--radius-5 .filepond--panel-root {
   border-radius: var(--radius-5);
 }
@@ -3546,10 +4060,10 @@ input:not(.mm_button) {
 .filepond--drop-label {
   font-family: inherit;
   font-size: var(--font-size-sm);
+  color: inherit;
 }
 
 /* ===== CHECKBOX DISABLED STATES ===== */
-
 /* Disabled states for different checkbox colors */
 .circle-nicelabel--primary[disabled] + .nicelabel-default-position,
 .rect-nicelabel--primary[disabled] + .nicelabel-default-position,
@@ -3637,6 +4151,269 @@ input:not(.mm_button) {
   background-color: var(--color-neutral-40) !important;
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* ====================================== */
+/* 📱 RESPONSIVE BREAKPOINTS */
+
+/* 📱 تبلت (768px به پایین) */
+@media (max-width: 768px) {
+  .fj_fileuploader {
+    gap: var(--spacing-1-5);
+  }
+
+  .fj_fileuploader .fj_label {
+    padding: var(--spacing-1-5);
+    font-size: var(--font-size-sm);
+  }
+
+  .fj_uploadbtn {
+    padding: var(--spacing-1-5) var(--spacing-3);
+    font-size: var(--font-size-sm);
+    min-height: 42px;
+  }
+
+  .fj_filelist {
+    margin-top: var(--spacing-1-5);
+    font-size: var(--font-size-xs);
+  }
+
+  .filepond--drop-label {
+    font-size: var(--font-size-xs);
+  }
+
+  /* FilePond responsive adjustments */
+  .filepond--root {
+    font-size: var(--font-size-sm);
+  }
+
+  .filepond--drop-label label {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-2);
+  }
+
+  .filepond--file {
+    padding: var(--spacing-1-5);
+  }
+}
+
+/* 📱 موبایل کوچک (480px به پایین) */
+@media (max-width: 480px) {
+  .fj_fileuploader {
+    gap: var(--spacing-1);
+  }
+
+  .fj_fileuploader .fj_label {
+    padding: var(--spacing-1);
+    font-size: var(--font-size-xs);
+    text-align: center;
+  }
+
+  .fj_uploadbtn {
+    padding: var(--spacing-1-5) var(--spacing-2);
+    font-size: var(--font-size-xs);
+    min-height: 40px;
+    border-radius: var(--radius-2);
+  }
+
+  .fj_filelist {
+    margin-top: var(--spacing-1);
+    font-size: var(--font-size-xs);
+    text-align: center;
+  }
+
+  .filepond--drop-label {
+    font-size: var(--font-size-xs);
+  }
+
+  /* FilePond mobile optimizations */
+  .filepond--root {
+    font-size: var(--font-size-xs);
+  }
+
+  .filepond--drop-label label {
+    font-size: var(--font-size-xs);
+    padding: var(--spacing-1-5);
+  }
+
+  .filepond--file {
+    padding: var(--spacing-1);
+    margin-bottom: var(--spacing-1);
+  }
+
+  .filepond--file-info {
+    font-size: var(--font-size-xs);
+  }
+
+  .filepond--file-status {
+    font-size: var(--font-size-xs);
+  }
+
+  /* Radius adjustments for mobile */
+  .fj_fileuploader.mm_input--radius-base .filepond--panel-root,
+  .fj_fileuploader.mm_input--radius-1 .filepond--panel-root,
+  .fj_fileuploader.mm_input--radius-4 .filepond--panel-root,
+  .fj_fileuploader.mm_input--radius-5 .filepond--panel-root {
+    border-radius: var(--radius-2);
+  }
+}
+
+/* 🖥️ دسکتاپ (1024px به بالا) */
+@media (min-width: 1024px) {
+  .fj_fileuploader {
+    gap: var(--spacing-3);
+  }
+
+  .fj_fileuploader .fj_label {
+    padding: var(--spacing-3);
+    font-size: var(--font-size-md);
+  }
+
+  .fj_uploadbtn {
+    padding: var(--spacing-3) var(--spacing-6);
+    font-size: var(--font-size-md);
+    min-height: 48px;
+  }
+
+  .fj_filelist {
+    margin-top: var(--spacing-3);
+    font-size: var(--font-size-sm);
+  }
+
+  .filepond--drop-label {
+    font-size: var(--font-size-md);
+  }
+}
+
+/* 🖥️ دسکتاپ بزرگ (1440px به بالا) */
+@media (min-width: 1440px) {
+  .fj_fileuploader .fj_label {
+    font-size: var(--font-size-lg);
+  }
+
+  .fj_uploadbtn {
+    padding: var(--spacing-4) var(--spacing-8);
+    font-size: var(--font-size-lg);
+    min-height: 52px;
+  }
+
+  .filepond--drop-label {
+    font-size: var(--font-size-lg);
+  }
+}
+
+/* ====================================== */
+/* 📱 CHECKBOX RESPONSIVE STYLES */
+
+/* 📱 تبلت و موبایل برای checkboxها */
+@media (max-width: 768px) {
+  /* کاهش سایز checkboxها در موبایل */
+  .circle-nicelabel--primary,
+  .rect-nicelabel--primary,
+  .text-nicelabel--primary,
+  .circle-nicelabel--secondary,
+  .rect-nicelabel--secondary,
+  .text-nicelabel--secondary,
+  .circle-nicelabel--success,
+  .rect-nicelabel--success,
+  .text-nicelabel--success,
+  .circle-nicelabel--info,
+  .rect-nicelabel--info,
+  .text-nicelabel--info,
+  .circle-nicelabel--warning,
+  .rect-nicelabel--warning,
+  .text-nicelabel--warning,
+  .circle-nicelabel--error,
+  .rect-nicelabel--error,
+  .text-nicelabel--error,
+  .circle-nicelabel--danger,
+  .rect-nicelabel--danger,
+  .text-nicelabel--danger,
+  .circle-nicelabel--neutral,
+  .rect-nicelabel--neutral,
+  .text-nicelabel--neutral {
+    transform: scale(0.9);
+  }
+
+  .nicelabel-default-position {
+    min-width: 36px;
+    min-height: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* سایز کوچک‌تر برای موبایل‌های بسیار کوچک */
+  .circle-nicelabel--primary,
+  .rect-nicelabel--primary,
+  .text-nicelabel--primary,
+  .circle-nicelabel--secondary,
+  .rect-nicelabel--secondary,
+  .text-nicelabel--secondary,
+  .circle-nicelabel--success,
+  .rect-nicelabel--success,
+  .text-nicelabel--success,
+  .circle-nicelabel--info,
+  .rect-nicelabel--info,
+  .text-nicelabel--info,
+  .circle-nicelabel--warning,
+  .rect-nicelabel--warning,
+  .text-nicelabel--warning,
+  .circle-nicelabel--error,
+  .rect-nicelabel--error,
+  .text-nicelabel--error,
+  .circle-nicelabel--danger,
+  .rect-nicelabel--danger,
+  .text-nicelabel--danger,
+  .circle-nicelabel--neutral,
+  .rect-nicelabel--neutral,
+  .text-nicelabel--neutral {
+    transform: scale(0.85);
+  }
+
+  .nicelabel-default-position {
+    min-width: 32px;
+    min-height: 32px;
+  }
+}
+
+/* ====================================== */
+/* 🎯 TOUCH OPTIMIZATIONS */
+
+@media (max-width: 768px) {
+  .fj_uploadbtn,
+  .filepond--root,
+  .nicelabel-default-position {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  /* افزایش ناحیه لمسی برای فایل آپلودر */
+  .filepond--drop-label {
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .filepond--drop-label label {
+    padding: var(--spacing-3);
+  }
+}
+
+/* اسکرول بار بهینه شده برای موبایل */
+.filepond--panel-root::-webkit-scrollbar {
+  width: 6px;
+}
+
+.filepond--panel-root::-webkit-scrollbar-thumb {
+  background: var(--color-neutral-40);
+  border-radius: 3px;
+}
+
+@media (max-width: 480px) {
+  .filepond--panel-root::-webkit-scrollbar {
+    width: 4px;
+  }
 }
 
 /* Button States */
