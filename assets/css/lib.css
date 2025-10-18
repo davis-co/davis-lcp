@@ -170,32 +170,40 @@
   --color-black: #090909;
   --color-gray-light: rgba(0, 0, 0, 0.05);
 
-  /* Border Radius Configuration */
-  --radius-1: 4px;
-  --radius-2: 6px;
-  --radius-base: 8px;
-  --radius-3: 10px;
-  --radius-4: 12px;
-  --radius-5: 16px;
-  --radius-6: 20px;
-  --radius-7: 24px;
-  --radius-8: 32px;
+ /* Border Radius Configuration */
+  --radius-1: 0.25rem;    /* 4px */
+  --radius-2: 0.375rem;   /* 6px */
+  --radius-base: 0.5rem;  /* 8px */
+  --radius-3: 0.625rem;   /* 10px */
+  --radius-4: 0.75rem;    /* 12px */
+  --radius-5: 1rem;       /* 16px */
+  --radius-6: 1.25rem;    /* 20px */
+  --radius-7: 1.5rem;     /* 24px */
+  --radius-8: 2rem;       /* 32px */
 
   /* Spacing Configuration */
-  --spacing-00: 2px;
-  --spacing-1: 4px;
-  --spacing-2: 8px;
-  --spacing-3: 12px;
-  --spacing-4: 16px;
-  --spacing-5: 24px;
-  --spacing-6: 32px;
-  --spacing-7: 40px;
-  --spacing-8: 48px;
-  --spacing-9: 56px;
-  --spacing-10: 64px;
-  --spacing-11: 72px;
-  --spacing-12: 80px;
+  --spacing-00: 0.125rem; /* 2px */
+  --spacing-1: 0.25rem;   /* 4px */
+  --spacing-2: 0.5rem;    /* 8px */
+  --spacing-3: 0.75rem;   /* 12px */
+  --spacing-4: 1rem;      /* 16px */
+  --spacing-5: 1.5rem;    /* 24px */
+  --spacing-6: 2rem;      /* 32px */
+  --spacing-7: 2.5rem;    /* 40px */
+  --spacing-8: 3rem;      /* 48px */
+  --spacing-9: 3.5rem;    /* 56px */
+  --spacing-10: 4rem;     /* 64px */
+  --spacing-11: 4.5rem;   /* 72px */
+  --spacing-12: 5rem;     /* 80px */
+
+  /* Font Size Configuration */
+  --font-size-xs: 0.625rem;  /* 10px */
+  --font-size-sm: 0.75rem;   /* 12px */
+  --font-size-md: 0.875rem;  /* 14px */
+  --font-size-lg: 1rem;      /* 16px */
+  --font-size-xl: 1.125rem;  /* 18px */
 }
+
 
 /* ===== FONTS (project-local) ===== */
 @font-face {
@@ -374,7 +382,7 @@ input:not(.mm_button) {
   transform: translateY(-100%) scale(0.9);
   opacity: 1;
   background-color: var(--color-white);
-  color: var(--_accent-color, var(--color-primary));
+  color: var(--_accent-color, var(--color-primary))
 }
 
 /* ====================================== */
@@ -566,10 +574,13 @@ input:not(.mm_button) {
 
 /* ====================================== */
 /* 🧩 Multiselect Component - IMPROVED */
-.mm_multiselect {
+.mm_multiselect,
+.mm_singleselect {
   position: relative;
-  min-height: 48px;
+  width: 100%;
+  font-size: 0.95rem;
 }
+
 
 .mm_multiselect_container {
   width: 100%;
@@ -592,7 +603,15 @@ input:not(.mm_button) {
 }
 
 .mm_multiselect_container:focus-within {
-  border-color: var(--_accent-color);
+  border: 1px solid var(--_accent-color);
+  box-shadow: 0 0 0 3px rgba(var(--_accent-color-rgb), 0.15);
+}
+
+/* Parent gets accent border when a descendant is checked/selected */
+.mm_multiselect_container:has(input:checked),
+.mm_multiselect_container:has(.mm_multiselect_option--selected),
+.mm_multiselect_container:has(.mm_multiselect_tag) {
+  border: 1px solid var(--_accent-color, var(--color-primary));
   box-shadow: 0 0 0 3px rgba(var(--_accent-color-rgb), 0.15);
 }
 
@@ -649,6 +668,7 @@ input:not(.mm_button) {
   width: 100%;
 }
 
+
 .mm_multiselect_search::placeholder {
   color: var(--color-neutral-50);
 }
@@ -658,11 +678,13 @@ input:not(.mm_button) {
   position: absolute;
   left: 0;
   right: 0;
+  top: calc(100% + 4px); 
+  bottom: auto; 
+  max-height: 240px;
   background-color: var(--color-white);
   border: 1px solid var(--color-neutral-60);
   border-radius: var(--radius-base);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-  max-height: 240px;
   overflow-y: auto;
   z-index: 1000;
   display: none;
