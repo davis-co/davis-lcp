@@ -236,8 +236,8 @@ $(document).ready(function () {
           JSON.stringify({
             label: "Skills",
             placeholder: "Select your skills",
-            variant: "outline",
-            color: "primary",
+            variant: "fill",
+            color: "secondary",
             radius: "radius-lg",
             disabled: false,
             multiple: true,
@@ -261,12 +261,9 @@ $(document).ready(function () {
     {
       class: Line,
       config: {
-        x0: 12,
-        x2: 2,
-        x6: 12,
-        x19: false,
+        btp: btoa(JSON.stringify({})),
       },
-      title: "Line Separator Component",
+      title: "simple line",
     },
   ];
 

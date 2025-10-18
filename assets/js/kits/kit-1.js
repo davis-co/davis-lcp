@@ -633,12 +633,39 @@ class Titr extends Element {
 }
 class Line extends Element {
   cT() {
-    this.label ? this.label.detach() : 1;
-    this.target = $('<hr class="mm_hr"/>');
+    const cfg = this.btp || {};
+    const text = cfg.label || "";
+    const align = cfg.align || "center"; // left, center, right
+    const color = cfg.color || "neutral"; // neutral, primary, success, warning, error
+    const thickness = cfg.thickness || "normal"; // thin, normal, thick
+    const spacing = cfg.spacing || "normal"; // compact, normal, spacious
+
+    if (text.trim()) {
+      // Build CSS classes
+      const lineClasses = ["mm_line", `mm_line--${align}`];
+      if (color !== "neutral") lineClasses.push(`mm_line--${color}`);
+      if (thickness !== "normal") lineClasses.push(`mm_line--${thickness}`);
+      if (spacing !== "normal") lineClasses.push(`mm_line--${spacing}`);
+
+      this.target = $(`
+        <div class="${lineClasses.join(" ")}">
+          <span class="mm_line__text">${text}</span>
+        </div>
+      `);
+    } else {
+      // Build CSS classes for plain line
+      const plainClasses = ["mm_line--plain"];
+      if (thickness !== "normal") plainClasses.push(`mm_line--${thickness}`);
+      if (spacing !== "normal") plainClasses.push(`mm_line--${spacing}`);
+
+      this.target = $(`<hr class="${plainClasses.join(" ")}"/>`);
+    }
   }
+
   rE() {}
   sRO(bro) {}
 }
+
 class Checkbox extends Input {
   cT() {
     const type = this.btp.type || "checkbox";
