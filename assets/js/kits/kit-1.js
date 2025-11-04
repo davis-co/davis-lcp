@@ -4,6 +4,12 @@ class Password extends Input {
     const variant = cfg.variant || "fill";
     const color = cfg.color || "primary";
     const radius = cfg.radius || "radius-base";
+    this.variant = variant;
+    this.color = color;
+    this.radius = radius;
+    this.variant = variant;
+    this.color = color;
+    this.radius = radius;
     const labelText = cfg.label || "Password";
     const placeholderText = cfg.placeholder || "Enter your password";
 
@@ -1006,5 +1012,676 @@ class Select extends Input {
 
   cSFSDTS() {
     return { status: this.lv != this.gV() };
+  }
+}
+class Table extends Element {
+  cT() {
+    // Decode config from base64 like other components
+    let cfg = this.btp || {};
+    if (typeof cfg === "string") {
+      try {
+        cfg = JSON.parse(atob(cfg));
+      } catch (e) {
+        console.error("Failed to decode table config:", e);
+        cfg = {};
+      }
+    }
+
+    const variant = cfg.variant || "fill";
+    const color = cfg.color || "primary";
+    const radius = cfg.radius || "radius-base";
+
+    this.limit = Number(cfg.limit) > 0 ? Number(cfg.limit) : 10;
+    this.currentpage = 1;
+    this.defaultrowcount =
+      Number(cfg.total) || (cfg.value ? cfg.value.length : 100000);
+    this.v = Array.isArray(cfg.value) ? cfg.value : [];
+    this.columns = cfg.c || {};
+
+    this.target = $(`
+			<div class="mm_table mm_table--${variant} mm_table--${color} mm_table--${radius}">
+				<div class="mm_table__container">
+					<table class="mm_table__table">
+						<thead class="mm_table__head th"></thead>
+						<tbody class="mm_table__body tb"></tbody>
+					</table>
+				</div>
+				<div class="mm_table__footer footer">
+        <div class="mm_table__tools">
+          <button type="button" class="mm_button mm_button--ghost mm_button--sm mm_button--${color} mm_button--${radius} mm_table__print">چاپ</button>
+          <button type="button" class="mm_button mm_button--ghost mm_button--sm mm_button--${color} mm_button--${radius} mm_table__csv">CSV</button>
+          <button type="button" class="mm_button mm_button--ghost mm_button--sm mm_button--${color} mm_button--${radius} mm_table__excel">Excel</button>
+        </div>
+        <div class="mm_table__pager">
+        <ul class="mm_table__pagination pagination-sm"></ul>
+          <select class="mm_table__limit">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+				</div>
+			</div>
+		`);
+
+    this.table = this.target.find("table");
+    this.ddlimit = this.target.find(".mm_table__limit");
+    this.pagination = this.target.find(".mm_table__pagination");
+
+    this.cH();
+    this.cF();
+    this.rG();
+
+    // tools
+    const _t = this;
+    this.target.find(".mm_table__print").on("click", function () {
+      if (typeof _t.target.printThis === "function") {
+        _t.target.printThis();
+      } else {
+        _t.fallbackPrint();
+      }
+    });
+    this.target.find(".mm_table__csv").on("click", function () {
+      _t.gCSV();
+    });
+    this.target.find(".mm_table__excel").on("click", function () {
+      _t.gExcel();
+    });
+
+    if (typeof this.cTB === "function") this.cTB();
+    if (typeof this.cTF === "function") this.cTF();
+  }
+
+  // header
+  cH() {
+    const headerTr$ = $("<tr/>");
+    for (const key in this.columns) {
+      const col = this.columns[key];
+      if (!col || !col.ha) continue;
+      if (col.ha.style && col.ha.style.replace(/ /g, "").includes("width:0"))
+        continue;
+
+      // Use 'n' property for header text, fallback to key without 'o' prefix
+      const headerText = col.ha.n || key.replace(/^o/, "");
+      const th$ = $("<th/>")
+        .attr("data-col-key", key.startsWith("o") ? key.substr(1) : key)
+        .html(headerText);
+      this.sca(th$, col.ha, key, headerText);
+      headerTr$.append(th$);
+
+      // enable sorting if requested
+      const sortable =
+        col.ha.sort === true || (col.ca && (col.ca.date || col.ca.datetime));
+      if (sortable) {
+        const _t = this;
+        th$.css("cursor", "pointer").on("click", function () {
+          const kwo = $(this).attr("data-col-key");
+          if (_t.sortKey === kwo)
+            _t.sortDir = _t.sortDir === "asc" ? "desc" : "asc";
+          else {
+            _t.sortKey = kwo;
+            _t.sortDir = "asc";
+          }
+          _t.currentpage = 1;
+          _t.rG();
+        });
+      }
+    }
+    this.target.find(".th").html("").append(headerTr$);
+  }
+
+  // render grid
+  rG() {
+    const setR = function (off, rows) {
+      let r = off;
+      for (let i = 0; i < rows.length; i++) rows[i].r = ++r;
+    };
+
+    // sort before pagination
+    let data = (this.v || []).slice();
+    if (!this.sortKey) {
+      // no-op
+    } else {
+      const key = this.sortKey;
+      const col = this.columns["o" + key] || this.columns[key] || {};
+      const isDate = col.ca && (col.ca.date || col.ca.datetime);
+      const parseDate = (val) => {
+        if (val == null || val === "") return 0;
+        if (typeof val === "number") return val;
+        if (typeof val === "string") {
+          if (/^\d+$/.test(val)) return parseInt(val, 10);
+          const parts = val.split("/").map(Number);
+          if (parts.length === 3)
+            return new Date(parts[0], parts[1] - 1, parts[2]).getTime();
+        }
+        const t = new Date(val).getTime();
+        return isNaN(t) ? 0 : t;
+      };
+      data.sort((a, b) => {
+        let va = a[key];
+        let vb = b[key];
+        if (isDate) {
+          va = parseDate(va);
+          vb = parseDate(vb);
+        }
+        if (va == null) va = "";
+        if (vb == null) vb = "";
+        let cmp;
+        if (typeof va === "number" && typeof vb === "number") cmp = va - vb;
+        else
+          cmp = String(va).localeCompare(String(vb), "fa", { numeric: true });
+        return this.sortDir === "asc" ? cmp : -cmp;
+      });
+    }
+
+    this.offset = (this.currentpage - 1) * this.limit;
+    const rows = data.slice(this.offset, this.offset + this.limit);
+    setR(this.offset, rows);
+    this.cRFSIG(rows);
+  }
+
+  // body
+  cRFSIG(rows) {
+    const body$ = this.target.find(".tb");
+    body$.html("");
+
+    for (let i = 0; i < rows.length; i++) {
+      const rowHash = rows[i];
+      const row$ = $("<tr/>");
+      if (rowHash && rowHash.otag) row$.attr("otag", rowHash.otag);
+
+      const createTD = (key, kwo, row$, _t) => {
+        const td$ = $("<td/>").addClass(kwo).attr("data-col-key", kwo);
+        let cV = kwo === "row" ? rowHash.r : rowHash[kwo];
+        if (cV == null) cV = "";
+
+        const col = _t.columns[key];
+        _t.sca(td$, col.ca, kwo, cV, rowHash.otag);
+
+        row$.append(td$);
+      };
+
+      for (const key in this.columns) {
+        const col = this.columns[key];
+        if (!col || !col.ha) continue;
+        if (col.ha.style && col.ha.style.replace(/ /g, "").includes("width:0"))
+          continue;
+
+        // Determine field name: support both legacy 'o' prefix and plain keys
+        const kwo = key.startsWith("o") ? key.substr(1) : key;
+        createTD(key, kwo, row$, this);
+      }
+
+      body$.append(row$);
+    }
+  }
+
+  // footer controls (pagination + limit)
+  cF() {
+    const _t = this;
+    // init limit
+    this.ddlimit.val(String(this.limit));
+    this.ddlimit.on("change", function () {
+      _t.limit = Number($(this).val()) || 10;
+      _t.currentpage = 1;
+      _t.buildPagination();
+      _t.rG();
+    });
+    this.buildPagination();
+  }
+
+  buildPagination() {
+    const _t = this;
+    const totalPages = Math.max(
+      1,
+      Math.ceil(this.defaultrowcount / this.limit)
+    );
+
+    if (this.pagination.data("twbs")) {
+      try {
+        this.pagination.twbsPagination("destroy");
+      } catch (e) {}
+    }
+
+    if (typeof this.pagination.twbsPagination === "function") {
+      this.pagination.twbsPagination({
+        last: null,
+        initiateStartPageClick: false,
+        startPage: this.currentpage,
+        totalPages: totalPages,
+        visiblePages: 5,
+        onPageClick: function (event, page) {
+          _t.currentpage = page;
+          _t.rG();
+        },
+      });
+    } else {
+      // Fallback: simple numbers
+      this.pagination.html("");
+      for (let p = 1; p <= Math.min(totalPages, 5); p++) {
+        const li = $(
+          `<li class="page-item"><a class="page-link">${p}</a></li>`
+        );
+        if (p === this.currentpage) li.addClass("active");
+        li.on("click", () => {
+          _t.currentpage = p;
+          _t.rG();
+          _t.buildPagination();
+        });
+        this.pagination.append(li);
+      }
+    }
+  }
+
+  // cell adapters
+  sca(t$, a, k, v, otag) {
+    const _t = this;
+
+    a = this.normalizeActionCA(a || {});
+
+    let actionButtons = [];
+    for (const key in a || {}) {
+      switch (key) {
+        case "style":
+          t$.attr("style", a[key]);
+          break;
+        case "money":
+          if (
+            a[key] &&
+            typeof utils !== "undefined" &&
+            utils.commaSeparateNumber
+          ) {
+            v = utils.commaSeparateNumber(v);
+          }
+          break;
+        case "date":
+          if (
+            v &&
+            !v.toString().includes("/") &&
+            typeof Calendar !== "undefined"
+          ) {
+            v = Calendar.javaTimeToIranianDate(parseInt(v));
+          }
+          break;
+        case "datetime":
+          if (v && typeof Calendar !== "undefined") {
+            v = Calendar.javaTimeToIranianDateTime(parseInt(v));
+          }
+          break;
+        case "d": {
+          const btn = $(
+            `<button class="mm_button mm_button--ghost mm_button--sm mm_button--${this.color} mm_button--${this.radius}"><span>حذف</span></button>`
+          );
+          btn.on("click", function () {
+            _t.dR(otag);
+          });
+          actionButtons.push(btn);
+          break;
+        }
+        case "e": {
+          const btn = $(
+            `<button class="mm_button mm_button--ghost mm_button--sm mm_button--${this.color} mm_button--${this.radius}"><span>ویرایش</span></button>`
+          );
+          btn.on("click", function () {
+            _t.enterEdit(otag);
+          });
+          actionButtons.push(btn);
+          break;
+        }
+        case "ac": {
+          const cfg = a.ac || {};
+          const label = cfg.label || "اکشن";
+          const color = cfg.color || this.color;
+          const btn = $(
+            `<button class="mm_button mm_button--ghost mm_button--sm mm_button--${color} mm_button--${this.radius}"><span>${label}</span></button>`
+          );
+          btn.on("click", function () {
+            const row = _t.findRowByOtag(otag);
+            console.log("mm_table custom action click", {
+              action: cfg.action || "custom",
+              row,
+              otag,
+            });
+            $(document).trigger("mm_table_action", {
+              action: cfg.action || "custom",
+              row,
+              otag,
+              table: _t,
+            });
+          });
+          actionButtons.push(btn);
+          break;
+        }
+        case "n":
+          // 'n' is for header text, skip for cells
+          break;
+        default:
+          v = this.getModifcatedV(a, key, v);
+      }
+    }
+
+    if (actionButtons.length > 0) {
+      t$.html("").append(actionButtons);
+    } else {
+      t$.html("").append(v);
+    }
+  }
+
+  normalizeActionCA(a) {
+    // allow friendly action keys alongside legacy ones
+    const na = Object.assign({}, a);
+    if (na.delete) na.d = true;
+    if (na.edit) na.e = true;
+    if (na.custom || na.action) na.ac = na.custom || na.action;
+    return na;
+  }
+
+  isActionsCol(col) {
+    if (!col || !col.ca) return false;
+    const ca = col.ca;
+    return !!(
+      ca.d ||
+      ca.e ||
+      ca.ac ||
+      ca.delete ||
+      ca.edit ||
+      ca.custom ||
+      ca.action
+    );
+  }
+
+  getVisibleNonActionKeys() {
+    const keys = [];
+    for (const key in this.columns) {
+      const col = this.columns[key];
+      if (!col || !col.ha) continue;
+      if (col.ha.style && col.ha.style.replace(/ /g, "").includes("width:0"))
+        continue;
+      if (this.isActionsCol(col)) continue;
+      const kwo = key.startsWith("o") ? key.substr(1) : key;
+      keys.push(kwo);
+    }
+    return keys;
+  }
+
+  getModifcatedV(a, key, v) {
+    switch (key) {
+      case "n":
+        v = a[key];
+        break;
+      case "idv":
+        if (typeof utils !== "undefined" && utils.gVFOFS) {
+          v = utils.gVFOFS(v);
+        }
+        break;
+    }
+    return v;
+  }
+
+  findRowByOtag(otag) {
+    const rows = this.v || [];
+    for (let i = 0; i < rows.length; i++)
+      if (rows[i].otag === otag) return rows[i];
+    return null;
+  }
+
+  enterEdit(otag) {
+    const row = this.findRowByOtag(otag);
+    if (!row) return;
+    const tr$ = this.target.find('tr[otag="' + otag + '"]');
+
+    // replace actions with Save/Cancel
+    const actionsKey = Object.keys(this.columns).find((k) =>
+      this.isActionsCol(this.columns[k])
+    );
+    if (actionsKey) {
+      const actionsKwo = actionsKey.startsWith("o")
+        ? actionsKey.substr(1)
+        : actionsKey;
+      const actionsTd$ = tr$.find('td[data-col-key="' + actionsKwo + '"]');
+      const saveBtn = $(
+        `<button class="mm_button mm_button--fill mm_button--sm mm_button--${this.color} mm_button--${this.radius}"><span>ذخیره</span></button>`
+      );
+      const cancelBtn = $(
+        `<button class="mm_button mm_button--ghost mm_button--sm mm_button--${this.color} mm_button--${this.radius}"><span>انصراف</span></button>`
+      );
+      saveBtn.on("click", () => this.saveEdit(otag));
+      cancelBtn.on("click", () => this.cancelEdit(otag));
+      actionsTd$.html("").append(saveBtn, cancelBtn);
+    }
+
+    // turn editable cells into inputs (skip actions column and non-visible)
+    for (const key in this.columns) {
+      const col = this.columns[key];
+      if (!col || !col.ha) continue;
+      if (col.ha.style && col.ha.style.replace(/ /g, "").includes("width:0"))
+        continue;
+      const kwo = key.startsWith("o") ? key.substr(1) : key;
+      if (kwo === "row" || this.isActionsCol(col)) continue;
+      const td$ = tr$.find('td[data-col-key="' + kwo + '"]');
+      if (!td$.length) continue;
+      const current = row[kwo] == null ? "" : row[kwo];
+      const input$ = $(`<input type="text" class="mm_table__edit" />`).val(
+        current
+      );
+      td$.data("orig", current).html("").append(input$);
+    }
+  }
+
+  saveEdit(otag) {
+    const row = this.findRowByOtag(otag);
+    if (!row) return;
+    const tr$ = this.target.find('tr[otag="' + otag + '"]');
+    for (const key in this.columns) {
+      const col = this.columns[key];
+      if (!col || !col.ha) continue;
+      if (col.ha.style && col.ha.style.replace(/ /g, "").includes("width:0"))
+        continue;
+      const kwo = key.startsWith("o") ? key.substr(1) : key;
+      if (kwo === "row" || this.isActionsCol(col)) continue;
+      const td$ = tr$.find('td[data-col-key="' + kwo + '"]');
+      const input$ = td$.find("input.mm_table__edit");
+      if (input$.length) {
+        row[kwo] = input$.val();
+      }
+    }
+    this.rG();
+  }
+
+  cancelEdit(otag) {
+    this.rG();
+  }
+
+  modificatedAllValue(rows) {
+    for (let i = 0; i < rows.length; i++) {
+      const rowHash = rows[i];
+      for (const key in this.columns) {
+        const r = this.columns[key];
+        const kwo = key.startsWith("o") ? key.substr(1) : key;
+
+        if (r.ha.style && r.ha.style.replace(/ /g, "").includes("width:0")) {
+          delete rowHash[kwo];
+          continue;
+        }
+
+        let cV = rowHash[kwo];
+        if (cV == null) cV = "";
+
+        for (const ck in r.ca) {
+          cV = this.getModifcatedV(r.ca, ck, cV);
+        }
+
+        rowHash[kwo] = cV;
+      }
+    }
+    return rows;
+  }
+
+  gCSV() {
+    const h = this.columns;
+    let r = this.v || [];
+    r = this.modificatedAllValue(r);
+    if (typeof createCSVAndD === "function") {
+      createCSVAndD(h, r);
+      return;
+    }
+    // Fallback simple CSV export
+    const allowed = this.getVisibleNonActionKeys();
+    const header = allowed.map((k) => {
+      const col = h["o" + k] || h[k];
+      return col && col.ha && col.ha.n ? col.ha.n : k;
+    });
+    const rows = r.map((row) => {
+      return allowed
+        .map((field) => {
+          let val = row[field];
+          if (val == null) val = "";
+          const s = String(val).replace(/"/g, '""');
+          return `"${s}"`;
+        })
+        .join(",");
+    });
+    const csvContent = [header.join(","), ...rows].join("\n");
+    const blob = new Blob(["\ufeff" + csvContent], {
+      type: "text/csv;charset=utf-8;",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "table.csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  gExcel() {
+    // Simple Excel export using HTML table data URI (supported by Excel)
+    const allowed = this.getVisibleNonActionKeys();
+    const tableClone = this.target.find("table").clone();
+    tableClone.find("thead th").each(function () {
+      const k = $(this).attr("data-col-key");
+      if (k && allowed.indexOf(k) === -1) $(this).remove();
+    });
+    tableClone.find("tbody tr").each(function () {
+      $(this)
+        .find("td")
+        .each(function () {
+          const k = $(this).attr("data-col-key");
+          if (k && allowed.indexOf(k) === -1) $(this).remove();
+        });
+    });
+    const tableHtml = tableClone[0].outerHTML;
+    const blob = new Blob(
+      [
+        `\ufeff<html><head><meta charset="UTF-8"></head><body>${tableHtml}</body></html>`,
+      ],
+      { type: "application/vnd.ms-excel" }
+    );
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "table.xls";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  fallbackPrint() {
+    const w = window.open("");
+    if (!w) return;
+    const styles = Array.from(
+      document.querySelectorAll('link[rel="stylesheet"], style')
+    )
+      .map((el) => el.outerHTML)
+      .join("\n");
+    const allowed = this.getVisibleNonActionKeys();
+    const tableClone = this.target.find(".mm_table__table").clone();
+    tableClone.find("thead th").each(function () {
+      const k = $(this).attr("data-col-key");
+      if (k && allowed.indexOf(k) === -1) $(this).remove();
+    });
+    tableClone.find("tbody tr").each(function () {
+      $(this)
+        .find("td")
+        .each(function () {
+          const k = $(this).attr("data-col-key");
+          if (k && allowed.indexOf(k) === -1) $(this).remove();
+        });
+    });
+    w.document.write(
+      `<!doctype html><html><head>${styles}<meta charset="utf-8"></head><body>${tableClone[0].outerHTML}</body></html>`
+    );
+    w.document.close();
+    w.focus();
+    w.print();
+    w.close();
+  }
+
+  // API
+  sV(v) {
+    this.v = Array.isArray(v) ? v : [];
+    this.defaultrowcount = this.v.length;
+    this.currentpage = 1;
+    this.buildPagination();
+    this.rG();
+  }
+
+  gV() {
+    return this.v || [];
+  }
+
+  cV() {
+    this.v = [];
+    this.defaultrowcount = 0;
+    this.currentpage = 1;
+    this.buildPagination();
+    this.rG();
+    if (typeof this.iSTS === "function") this.iSTS(false);
+  }
+
+  dR(otag) {
+    const cb = function (_t, p, res) {
+      const rows = _t.v || [];
+      for (let i = 0; i < rows.length; i++) {
+        if (rows[i].otag === otag) {
+          rows.splice(i, 1);
+          _t.target.find('tr[otag="' + otag + '"]').remove();
+          break;
+        }
+      }
+      _t.v = rows;
+      _t.defaultrowcount = _t.v.length;
+      _t.buildPagination();
+    };
+
+    if (
+      typeof bpms !== "undefined" &&
+      typeof bpms.manageForDBS === "function"
+    ) {
+      try {
+        const result = bpms.manageForDBS(this, cb, { d: true, otag: otag });
+        // If handler returns a promise, honor it; on failure, fallback to client-side delete
+        if (result && typeof result.then === "function") {
+          result.catch(() => cb(this));
+          return result;
+        }
+        // If handler returns falsy/undefined (no-op), fallback to client-side delete
+        if (result == null || result === false) cb(this);
+        return result;
+      } catch (e) {
+        // On any error in handler, fallback
+        cb(this);
+        return;
+      }
+    } else {
+      cb(this);
+    }
+  }
+
+  cSFSDTS() {
+    return { status: false };
   }
 }
